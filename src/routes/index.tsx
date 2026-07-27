@@ -10,6 +10,7 @@ import { GithubDashboard } from "@/components/site/github-stats";
 import { Blog, Testimonials } from "@/components/site/blog";
 import { Contact, SiteFooter } from "@/components/site/contact";
 import { Toaster } from "@/components/ui/sonner";
+import { LoadingScreen } from "@/components/site/loading-screen";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -52,6 +53,13 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="relative min-h-dvh overflow-x-hidden bg-background">
+      <LoadingScreen />
+      <a
+        href="#about"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+      >
+        Skip to content
+      </a>
       <ScrollProgress />
       <BackgroundOrbs />
       <CursorGlow />
