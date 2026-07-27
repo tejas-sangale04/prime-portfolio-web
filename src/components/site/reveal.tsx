@@ -33,10 +33,11 @@ export function Reveal({
     return () => io.disconnect();
   }, []);
 
+  const Component = Tag as React.ElementType;
+
   return (
-    // @ts-expect-error dynamic tag ref typing
-    <Tag
-      ref={ref}
+    <Component
+      ref={ref as React.Ref<HTMLElement>}
       data-visible={visible}
       style={{ transitionDelay: `${delay}ms` }}
       className={cn("reveal", className)}
