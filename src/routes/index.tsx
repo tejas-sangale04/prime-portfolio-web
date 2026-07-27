@@ -8,6 +8,8 @@ import { Achievements, Experience } from "@/components/site/timelines";
 import { Certifications } from "@/components/site/certifications";
 import { GithubDashboard } from "@/components/site/github-stats";
 import { Blog, Testimonials } from "@/components/site/blog";
+import { Contact, SiteFooter } from "@/components/site/contact";
+import { Toaster } from "@/components/ui/sonner";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -65,8 +67,11 @@ function Index() {
         <GithubDashboard />
         <Blog />
         <Testimonials />
+        <Contact />
       </main>
+      <SiteFooter />
       <BackToTop />
+      <Toaster position="bottom-center" />
     </div>
   );
 }
