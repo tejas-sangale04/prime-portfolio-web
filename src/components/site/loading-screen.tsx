@@ -4,8 +4,8 @@ export function LoadingScreen() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setHidden(true), 650);
-    return () => clearTimeout(t);
+    const raf = requestAnimationFrame(() => setHidden(true));
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
