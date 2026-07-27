@@ -7,6 +7,7 @@ import { Projects } from "@/components/site/projects";
 import { Achievements, Experience } from "@/components/site/timelines";
 import { Certifications } from "@/components/site/certifications";
 import { GithubDashboard } from "@/components/site/github-stats";
+import { Blog, Testimonials } from "@/components/site/blog";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -62,6 +63,8 @@ function Index() {
         <Certifications />
         <Achievements />
         <GithubDashboard />
+        <Blog />
+        <Testimonials />
       </main>
       <BackToTop />
     </div>
