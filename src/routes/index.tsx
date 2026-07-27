@@ -1,24 +1,56 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SiteNav } from "@/components/site/nav";
+import { Hero } from "@/components/site/hero";
+import {
+  BackToTop,
+  BackgroundOrbs,
+  CursorGlow,
+  ScrollProgress,
+} from "@/components/site/site-chrome";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "Aarav Deshmukh — Full Stack Developer & AI Enthusiast";
+const description =
+  "Portfolio of Aarav Deshmukh: full stack web and mobile developer building AI-powered products with React, Node.js and Python.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Aarav Deshmukh",
+          jobTitle: "Full Stack Developer",
+          url: "/",
+        }),
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="relative min-h-dvh overflow-x-hidden bg-background">
+      <ScrollProgress />
+      <BackgroundOrbs />
+      <CursorGlow />
+      <SiteNav />
+      <main className="relative z-10">
+        <Hero />
+      </main>
+      <BackToTop />
     </div>
   );
 }
