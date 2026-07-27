@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/site/nav";
 import { Hero } from "@/components/site/hero";
 import { About } from "@/components/site/about";
 import { Skills } from "@/components/site/skills";
+import { Projects } from "@/components/site/projects";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -53,6 +54,7 @@ function Index() {
         <Hero />
         <About />
         <Skills />
+        <Projects />
       </main>
       <BackToTop />
     </div>
