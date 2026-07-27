@@ -4,6 +4,7 @@ import { Hero } from "@/components/site/hero";
 import { About } from "@/components/site/about";
 import { Skills } from "@/components/site/skills";
 import { Projects } from "@/components/site/projects";
+import { Achievements, Experience } from "@/components/site/timelines";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -55,6 +56,8 @@ function Index() {
         <About />
         <Skills />
         <Projects />
+        <Experience />
+        <Achievements />
       </main>
       <BackToTop />
     </div>
