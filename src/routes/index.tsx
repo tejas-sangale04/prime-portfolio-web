@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/nav";
 import { Hero } from "@/components/site/hero";
 import { About } from "@/components/site/about";
+import { Skills } from "@/components/site/skills";
 import {
   BackToTop,
   BackgroundOrbs,
@@ -51,6 +52,7 @@ function Index() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <Skills />
       </main>
       <BackToTop />
     </div>
