@@ -43,7 +43,7 @@ export function Reveal({
       className={cn("reveal", className)}
     >
       {children}
-    </Tag>
+    </Component>
   );
 }
 
