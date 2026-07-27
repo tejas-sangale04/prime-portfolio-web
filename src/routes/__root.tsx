@@ -77,14 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Aarav Deshmukh — Developer Portfolio" },
+      {
+        name: "description",
+        content:
+          "Full stack developer building AI-powered web and mobile products with React, Node.js and Python.",
+      },
+      { name: "author", content: "Aarav Deshmukh" },
+      { name: "theme-color", content: "#3B82F6" },
+      { property: "og:site_name", content: "Aarav Deshmukh" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
