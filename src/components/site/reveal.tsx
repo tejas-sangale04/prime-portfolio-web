@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
+import { SparkleText } from "@/components/site/sparkles";
 
 export function Reveal({
   children,
@@ -58,10 +60,20 @@ export function SectionHeading({
 }) {
   return (
     <Reveal className="mx-auto max-w-2xl text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">{eyebrow}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+        <SparkleText>{eyebrow}</SparkleText>
+      </p>
       <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
         {title}
       </h2>
+      <motion.span
+        aria-hidden="true"
+        className="mx-auto mt-4 block h-px w-24 bg-linear-to-r from-transparent via-primary-glow to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      />
       {description ? (
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">{description}</p>
       ) : null}
