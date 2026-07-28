@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Download, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "motion/react";
+import { SparkCard, SparkleField, SparkleText } from "@/components/site/sparkles";
 
 const ROLES = [
   "Full Stack Developer",
@@ -43,15 +45,27 @@ export function Hero() {
       id="home"
       className="relative flex min-h-dvh scroll-mt-24 items-center px-5 pt-28 pb-20 sm:px-8"
     >
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-        <div>
+      <SparkleField count={30} seed={5} className="z-0" />
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
-            <span className="size-2 rounded-full bg-primary" />
+            <motion.span
+              className="size-2 rounded-full bg-primary"
+              animate={{ scale: [1, 1.6, 1], opacity: [1, 0.5, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            />
             Available for internships & freelance work
           </span>
 
           <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-            Hi, I'm <span className="glow-text">Aarav Deshmukh</span>
+            Hi, I'm{" "}
+            <SparkleText>
+              <span className="glow-text">Aarav Deshmukh</span>
+            </SparkleText>
           </h1>
 
           <p
@@ -106,10 +120,15 @@ export function Hero() {
               </li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
-        <div className="relative mx-auto w-full max-w-sm">
-          <div className="glass rounded-3xl p-6">
+        <motion.div
+          className="relative mx-auto w-full max-w-sm"
+          initial={{ opacity: 0, y: 40, rotate: -2 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <SparkCard className="glass rounded-3xl p-6">
             <div className="flex items-center gap-1.5">
               <span className="size-3 rounded-full bg-destructive/80" />
               <span className="size-3 rounded-full bg-chart-5/80" />
@@ -137,8 +156,8 @@ export function Hero() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </SparkCard>
+        </motion.div>
       </div>
     </section>
   );
