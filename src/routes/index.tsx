@@ -17,6 +17,7 @@ import {
   CursorGlow,
   ScrollProgress,
 } from "@/components/site/site-chrome";
+import { SparkCursor } from "@/components/site/sparkles";
 
 const title = "Aarav Deshmukh — Full Stack Developer & AI Enthusiast";
 const description =
@@ -63,6 +64,7 @@ function Index() {
       <ScrollProgress />
       <BackgroundOrbs />
       <CursorGlow />
+      <SparkCursor />
       <SiteNav />
       <main className="relative z-10">
         <Hero />
