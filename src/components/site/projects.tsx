@@ -91,6 +91,12 @@ const PROJECTS: Project[] = [
   },
 ];
 
+function updateSpotlight(e: MouseEvent<HTMLElement>) {
+  const rect = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+  e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+}
+
 export function Projects() {
   return (
     <Section id="projects">
@@ -106,6 +112,7 @@ export function Projects() {
             key={p.title}
             delay={i * 80}
             as="article"
+            onMouseMove={updateSpotlight}
             className="glass spotlight shine group flex flex-col overflow-hidden rounded-3xl transition-transform hover:-translate-y-1.5"
           >
             <div className="relative flex aspect-video items-center justify-center bg-linear-to-br from-primary/25 via-primary/10 to-transparent">
