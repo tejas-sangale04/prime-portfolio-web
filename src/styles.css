@@ -170,6 +170,57 @@ html {
   }
 }
 
+@keyframes gradient-rotate {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+@keyframes text-pulse-glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 20px color-mix(in oklab, var(--primary) 40%, transparent),
+      0 0 40px color-mix(in oklab, var(--primary-glow) 20%, transparent);
+  }
+  50% {
+    text-shadow:
+      0 0 30px color-mix(in oklab, var(--primary) 60%, transparent),
+      0 0 60px color-mix(in oklab, var(--primary-glow) 35%, transparent);
+  }
+}
+
+@keyframes aurora-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes noise-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
