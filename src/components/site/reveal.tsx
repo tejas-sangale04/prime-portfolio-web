@@ -8,12 +8,13 @@ export function Reveal({
   className,
   delay = 0,
   as: Tag = "div",
+  ...props
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   as?: "div" | "section" | "li" | "article";
-}) {
+} & React.HTMLAttributes<HTMLElement>) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -43,6 +44,7 @@ export function Reveal({
       data-visible={visible}
       style={{ transitionDelay: `${delay}ms` }}
       className={cn("reveal", className)}
+      {...props}
     >
       {children}
     </Component>
