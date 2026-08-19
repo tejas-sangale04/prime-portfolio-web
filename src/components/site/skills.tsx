@@ -43,7 +43,7 @@ export function Skills() {
           <Reveal
             key={cat.title}
             delay={i * 80}
-            className="glass rounded-3xl p-6 transition-transform hover:-translate-y-1"
+            className="glass magnetic-hover rounded-3xl p-6"
           >
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {cat.title}

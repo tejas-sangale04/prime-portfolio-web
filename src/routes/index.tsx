@@ -4,9 +4,9 @@ import { Hero } from "@/components/site/hero";
 import { About } from "@/components/site/about";
 import { Skills } from "@/components/site/skills";
 import { Projects } from "@/components/site/projects";
-import { Achievements, Experience } from "@/components/site/timelines";
+import { Achievements } from "@/components/site/timelines";
 import { Certifications } from "@/components/site/certifications";
-import { Blog, Testimonials } from "@/components/site/blog";
+import { Blog } from "@/components/site/blog";
 import { Contact, SiteFooter } from "@/components/site/contact";
 import { Toaster } from "@/components/ui/sonner";
 import { LoadingScreen } from "@/components/site/loading-screen";
@@ -70,11 +70,9 @@ function Index() {
         <About />
         <Skills />
         <Projects />
-        <Experience />
         <Certifications />
         <Achievements />
         <Blog />
-        <Testimonials />
         <Contact />
       </main>
       <SiteFooter />
