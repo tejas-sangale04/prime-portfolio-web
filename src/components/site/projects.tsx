@@ -105,7 +105,7 @@ export function Projects() {
             key={p.title}
             delay={i * 80}
             as="article"
-            className="glass group flex flex-col overflow-hidden rounded-3xl transition-transform hover:-translate-y-1.5"
+            className="glass spotlight shine group flex flex-col overflow-hidden rounded-3xl transition-transform hover:-translate-y-1.5"
           >
             <div className="relative flex aspect-video items-center justify-center bg-linear-to-br from-primary/25 via-primary/10 to-transparent">
               <p.Icon className="size-10 text-primary" aria-hidden="true" />

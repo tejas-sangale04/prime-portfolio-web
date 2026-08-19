@@ -18,7 +18,7 @@ const stats = [
 
 export function About() {
   return (
-    <Section id="about">
+    <Section id="about" className="aurora-bg noise-overlay">
       <SectionHeading
         eyebrow="About me"
         title="Building software that solves real problems"
