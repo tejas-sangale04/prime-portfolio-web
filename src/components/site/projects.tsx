@@ -12,6 +12,7 @@ import {
 import { Reveal, Section, SectionHeading } from "@/components/site/reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { type MouseEvent } from "react";
 
 type Project = {
   title: string;
