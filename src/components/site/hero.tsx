@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Download, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import { SparkCard, SparkleField, SparkleText } from "@/components/site/sparkles";
+import { SparkleField, SparkleText } from "@/components/site/sparkles";
+import { IdCard } from "@/components/site/id-card";
 
 const ROLES = [
   "Full Stack Developer",
@@ -83,9 +84,9 @@ export function Hero() {
           </p>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-            I design and build fast, reliable web and mobile products — from AI-powered health
-            apps to real-time collaboration tools. Computer engineering student, relentless
-            problem solver, and open source contributor.
+            I design and build fast, reliable web and mobile products — from AI-powered health apps
+            to real-time collaboration tools. Computer engineering student, relentless problem
+            solver, and open source contributor.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -123,40 +124,12 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="relative mx-auto w-full max-w-sm"
-          initial={{ opacity: 0, y: 40, rotate: -2 }}
-          animate={{ opacity: 1, y: 0, rotate: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full lg:-mt-40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
         >
-          <SparkCard className="glass rounded-3xl p-6">
-            <div className="flex items-center gap-1.5">
-              <span className="size-3 rounded-full bg-destructive/80" />
-              <span className="size-3 rounded-full bg-chart-5/80" />
-              <span className="size-3 rounded-full bg-chart-3/80" />
-              <span className="ml-2 text-xs text-muted-foreground">developer.ts</span>
-            </div>
-            <pre className="mt-4 overflow-x-auto text-xs leading-6 text-muted-foreground">
-              <code>{`const dev = {
-  name: "Aarav Deshmukh",
-  role: "Full Stack Developer",
-  stack: ["React", "Node", "Python"],
-  focus: "AI · Web · Mobile",
-  solve: (problem) => ship(problem),
-};`}</code>
-            </pre>
-            <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-              {[
-                { k: "15+", v: "Projects" },
-                { k: "500+", v: "DSA solved" },
-                { k: "8+", v: "Certificates" },
-              ].map((s) => (
-                <div key={s.v} className="rounded-xl bg-secondary/60 p-3">
-                  <p className="text-lg font-bold text-primary">{s.k}</p>
-                  <p className="text-[11px] text-muted-foreground">{s.v}</p>
-                </div>
-              ))}
-            </div>
-          </SparkCard>
+          <IdCard />
         </motion.div>
       </div>
     </section>
