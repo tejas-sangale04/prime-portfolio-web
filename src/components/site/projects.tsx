@@ -73,7 +73,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.6, delay: (index % 2) * 0.08, ease }}
     >
-      <div className="grid gap-6 lg:grid-cols-[96px_1fr_auto] lg:items-start">
+      <div className="grid gap-6 lg:grid-cols-[72px_1fr_1.05fr] lg:items-start">
         <span
           className="font-hero text-3xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70"
           style={{ fontStretch: "112%" }}
@@ -117,7 +117,27 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </ul>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 lg:justify-end">
+        {project.image ? (
+          <motion.a
+            href={project.demo ?? project.github ?? project.image}
+            target="_blank"
+            rel="noreferrer"
+            className="order-last block overflow-hidden rounded-2xl border border-border bg-background/50 lg:order-none lg:col-start-3 lg:row-span-2"
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1, ease }}
+          >
+            <img
+              src={project.image}
+              alt={`${project.title} screenshot`}
+              loading="lazy"
+              className="w-full transition-transform duration-500 hover:scale-[1.02]"
+            />
+          </motion.a>
+        ) : null}
+
+        <div className="flex flex-wrap items-center gap-4 lg:col-span-2 lg:col-start-2">
           {project.github ? (
             <a
               href={project.github}
@@ -168,22 +188,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             className="overflow-hidden"
           >
             <div className="mt-8 space-y-10 rounded-3xl border border-border bg-background/50 p-6 sm:p-8">
-              {project.image ? (
-                <a
-                  href={project.demo ?? project.github ?? project.image}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block overflow-hidden rounded-2xl border border-border"
-                >
-                  <img
-                    src={project.image}
-                    alt={`${project.title} screenshot`}
-                    loading="lazy"
-                    className="w-full transition-transform duration-500 hover:scale-[1.02]"
-                  />
-                </a>
-              ) : null}
-
               <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
                 <div className="space-y-6">
                   <div>
