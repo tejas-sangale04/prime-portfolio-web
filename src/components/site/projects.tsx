@@ -10,6 +10,8 @@ type Project = {
   tech: string[];
   github?: string;
   demo?: string;
+  /** A screenshot or poster in `public/projects/`, shown beside the row. */
+  image?: string;
   /** Headline result, shown on the card. */
   metric?: { value: string; label: string };
   detail?: {
@@ -26,6 +28,8 @@ const PROJECTS: Project[] = [
       "An agent-based accounts-payable system. Upload a supplier invoice and an AI agent reads it, runs a 3-way match against the purchase order and delivery, then approves, holds or escalates it.",
     tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "React", "Firestore", "Cloud Run"],
     github: "https://github.com/tejas-sangale04/Invoice-to-payment-agent",
+    // Drop a PNG in `public/projects/` and point `image` at it, e.g.
+    // image: "/projects/invoiceflow.png",
     metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
     detail: {
       problem:
@@ -111,6 +115,26 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               </li>
             ))}
           </ul>
+
+          {project.image ? (
+            <motion.a
+              href={project.demo ?? project.github ?? project.image}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-7 block overflow-hidden rounded-2xl border border-border bg-background/50"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1, ease }}
+            >
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                loading="lazy"
+                className="w-full transition-transform duration-500 hover:scale-[1.02]"
+              />
+            </motion.a>
+          ) : null}
         </div>
 
         <div className="flex flex-wrap items-center gap-4 lg:justify-end">
@@ -129,9 +153,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               href={project.demo}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
             >
-              <ExternalLink className="size-4" /> Demo
+              <ExternalLink className="size-4" /> Live site
             </a>
           ) : null}
           {project.detail ? (
