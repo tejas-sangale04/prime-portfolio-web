@@ -28,8 +28,8 @@ const PROJECTS: Project[] = [
       "An agent-based accounts-payable system. Upload a supplier invoice and an AI agent reads it, runs a 3-way match against the purchase order and delivery, then approves, holds or escalates it.",
     tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "React", "Firestore", "Cloud Run"],
     github: "https://github.com/tejas-sangale04/Invoice-to-payment-agent",
-    // Drop a PNG in `public/projects/` and point `image` at it, e.g.
-    // image: "/projects/invoiceflow.png",
+
+    image: "/projects/invoiceflow.png",
     metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
     detail: {
       problem:
@@ -115,26 +115,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               </li>
             ))}
           </ul>
-
-          {project.image ? (
-            <motion.a
-              href={project.demo ?? project.github ?? project.image}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-7 block overflow-hidden rounded-2xl border border-border bg-background/50"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.1, ease }}
-            >
-              <img
-                src={project.image}
-                alt={`${project.title} preview`}
-                loading="lazy"
-                className="w-full transition-transform duration-500 hover:scale-[1.02]"
-              />
-            </motion.a>
-          ) : null}
         </div>
 
         <div className="flex flex-wrap items-center gap-4 lg:justify-end">
@@ -187,35 +167,53 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             transition={{ duration: 0.45, ease }}
             className="overflow-hidden"
           >
-            <div className="mt-8 grid gap-8 rounded-3xl border border-border bg-background/50 p-6 sm:p-8 lg:grid-cols-[1fr_1.4fr]">
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    The problem
-                  </h4>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {project.detail.problem}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    The hard part
-                  </h4>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {project.detail.hard}
-                  </p>
-                </div>
-              </div>
-              {project.detail.diagram ? (
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    Architecture
-                  </h4>
-                  <div className="mt-4 overflow-x-auto">
-                    <div className="min-w-[560px]">{project.detail.diagram}</div>
+            <div className="mt-8 space-y-10 rounded-3xl border border-border bg-background/50 p-6 sm:p-8">
+              {project.image ? (
+                <a
+                  href={project.demo ?? project.github ?? project.image}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block overflow-hidden rounded-2xl border border-border"
+                >
+                  <img
+                    src={project.image}
+                    alt={`${project.title} screenshot`}
+                    loading="lazy"
+                    className="w-full transition-transform duration-500 hover:scale-[1.02]"
+                  />
+                </a>
+              ) : null}
+
+              <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      The problem
+                    </h4>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {project.detail.problem}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      The hard part
+                    </h4>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {project.detail.hard}
+                    </p>
                   </div>
                 </div>
-              ) : null}
+                {project.detail.diagram ? (
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      Architecture
+                    </h4>
+                    <div className="mt-4 overflow-x-auto">
+                      <div className="min-w-[560px]">{project.detail.diagram}</div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </motion.div>
         ) : null}
