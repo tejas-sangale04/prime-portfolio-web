@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { SkillIcon, type SkillIconSource } from "@/components/site/skill-icon";
 
 /*
  * A rotating 3D sphere of skill labels.
@@ -11,7 +12,7 @@ import { cn } from "@/lib/utils";
  * frames never re-render React; only `active` (the hovered category) does.
  */
 
-export type SphereSkill = { label: string; category: string };
+export type SphereSkill = { label: string; category: string; icon: SkillIconSource };
 
 const FRICTION = 0.95;
 const IDLE = { x: 0.0012, y: 0.0035 };
@@ -149,7 +150,7 @@ export function SkillSphere({
             }}
             aria-hidden="true"
             className={cn(
-              "absolute top-1/2 left-1/2 rounded-full px-3 py-1 font-hero text-xs font-bold whitespace-nowrap sm:text-sm transition-[color,background-color,box-shadow] duration-300 will-change-transform",
+              "absolute top-1/2 left-1/2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-hero text-xs font-bold whitespace-nowrap sm:text-sm transition-[color,background-color,box-shadow] duration-300 will-change-transform",
               on
                 ? "bg-emerald-500/15 text-emerald-300 shadow-[0_0_18px] shadow-emerald-500/40"
                 : active
@@ -158,6 +159,7 @@ export function SkillSphere({
             )}
             style={{ fontStretch: "112%" }}
           >
+            <SkillIcon icon={s.icon} className="size-3.5 shrink-0 sm:size-4" />
             {s.label}
           </span>
         );

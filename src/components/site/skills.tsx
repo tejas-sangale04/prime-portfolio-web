@@ -1,56 +1,101 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "@/components/site/reveal";
+import {
+  Bot,
+  Brain,
+  Bug,
+  Cloud,
+  Database,
+  FileSearch,
+  Layers,
+  Plug,
+  ScanSearch,
+  ShieldCheck,
+  Sparkles,
+  Webhook,
+} from "lucide-react";
 import { SkillSphere, type SphereSkill } from "@/components/site/skill-sphere";
+import { SkillIcon, type SkillIconSource } from "@/components/site/skill-icon";
 
-type Category = { title: string; skills: string[] };
+type Skill = { label: string; icon: SkillIconSource };
+type Category = { title: string; skills: Skill[] };
 
 const CATEGORIES: Category[] = [
   {
     title: "Languages",
-    skills: ["C", "C++", "Python", "Java", "JavaScript", "SQL", "HTML5", "CSS3"],
+    skills: [
+      { label: "C", icon: "c" },
+      { label: "C++", icon: "cpp" },
+      { label: "Python", icon: "python" },
+      { label: "Java", icon: "java" },
+      { label: "JavaScript", icon: "javascript" },
+      { label: "SQL", icon: Database },
+      { label: "HTML5", icon: "html5" },
+      { label: "CSS3", icon: "css" },
+    ],
   },
   {
     title: "Frameworks",
     skills: [
-      "React.js",
-      "Node.js",
-      "Express.js",
-      "Next.js",
-      "React Native",
-      "REST APIs",
-      "LangChain",
+      { label: "React.js", icon: "react" },
+      { label: "Node.js", icon: "node" },
+      { label: "Express.js", icon: "express" },
+      { label: "Next.js", icon: "next" },
+      { label: "React Native", icon: "react" },
+      { label: "REST APIs", icon: Webhook },
+      { label: "LangChain", icon: "langchain" },
     ],
   },
   {
     title: "AI / ML",
-    skills: ["LLMs", "AI Agents", "RAG", "OpenAI SDK", "PyTorch", "Keras", "MCP", "AI Guardrails"],
+    skills: [
+      { label: "LLMs", icon: Brain },
+      { label: "AI Agents", icon: Bot },
+      { label: "RAG", icon: FileSearch },
+      { label: "OpenAI SDK", icon: Sparkles },
+      { label: "PyTorch", icon: "pytorch" },
+      { label: "Keras", icon: "keras" },
+      { label: "MCP", icon: Plug },
+      { label: "AI Guardrails", icon: ShieldCheck },
+    ],
   },
   {
     title: "Databases",
     skills: [
-      "PostgreSQL",
-      "MySQL",
-      "MongoDB",
-      "Firebase",
-      "Firestore",
-      "ChromaDB",
-      "Qdrant",
-      "FAISS",
+      { label: "PostgreSQL", icon: "postgresql" },
+      { label: "MySQL", icon: "mysql" },
+      { label: "MongoDB", icon: "mongodb" },
+      { label: "Firebase", icon: "firebase" },
+      { label: "Firestore", icon: "firebase" },
+      { label: "ChromaDB", icon: Layers },
+      { label: "Qdrant", icon: "qdrant" },
+      { label: "FAISS", icon: ScanSearch },
     ],
   },
   {
     title: "Cloud & Platforms",
-    skills: ["Google Cloud", "AWS", "Vercel", "Render"],
+    skills: [
+      { label: "Google Cloud", icon: "googlecloud" },
+      { label: "AWS", icon: Cloud },
+      { label: "Vercel", icon: "vercel" },
+      { label: "Render", icon: "render" },
+    ],
   },
   {
     title: "Developer Tools",
-    skills: ["Git / GitHub", "Source Control", "Debugging", "Figma", "Postman"],
+    skills: [
+      { label: "Git / GitHub", icon: "github" },
+      { label: "Source Control", icon: "git" },
+      { label: "Debugging", icon: Bug },
+      { label: "Figma", icon: "figma" },
+      { label: "Postman", icon: "postman" },
+    ],
   },
 ];
 
 const SPHERE: SphereSkill[] = CATEGORIES.flatMap((c) =>
-  c.skills.map((label) => ({ label, category: c.title })),
+  c.skills.map((s) => ({ ...s, category: c.title })),
 );
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -106,16 +151,17 @@ export function Skills() {
                 <div className="flex flex-wrap gap-2">
                   {cat.skills.map((skill, j) => (
                     <motion.span
-                      key={skill}
+                      key={skill.label}
                       tabIndex={0}
-                      className="rounded-full border border-border bg-background/60 px-3 py-1.5 text-sm text-foreground/85 transition-colors outline-none group-hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-200 focus-visible:ring-2 focus-visible:ring-ring"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 py-1.5 pr-3 pl-2.5 text-sm text-foreground/85 transition-colors outline-none group-hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-200 focus-visible:ring-2 focus-visible:ring-ring"
                       initial={{ opacity: 0, y: 8 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: i * 0.07 + 0.15 + j * 0.035, ease }}
                       whileHover={{ y: -2 }}
                     >
-                      {skill}
+                      <SkillIcon icon={skill.icon} className="size-4 shrink-0" />
+                      {skill.label}
                     </motion.span>
                   ))}
                 </div>
