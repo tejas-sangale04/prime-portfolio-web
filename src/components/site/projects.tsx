@@ -1,166 +1,231 @@
-import {
-  Activity,
-  Bot,
-  ExternalLink,
-  Github,
-  GraduationCap,
-  LineChart,
-  User,
-  UtensilsCrossed,
-  type LucideIcon,
-} from "lucide-react";
-import { Reveal, Section, SectionHeading } from "@/components/site/reveal";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { type MouseEvent } from "react";
+import { useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronDown, ExternalLink, Github } from "lucide-react";
+import { Reveal } from "@/components/site/reveal";
+import { ArchitectureDiagram } from "@/components/site/architecture-diagram";
 
 type Project = {
   title: string;
-  description: string;
+  tagline: string;
   tech: string[];
-  features: string[];
-  Icon: LucideIcon;
-  github: string;
-  demo: string;
+  github?: string;
+  demo?: string;
+  /** Headline result, shown on the card. */
+  metric?: { value: string; label: string };
+  detail?: {
+    problem: string;
+    hard: string;
+    diagram?: ReactNode;
+  };
 };
 
 const PROJECTS: Project[] = [
   {
-    title: "Smart Heal",
-    description:
-      "AI-powered physiotherapy mobile app that detects body parts with computer vision and recommends therapy through wearable Bluetooth devices.",
-    tech: ["React Native", "Expo", "Firebase", "TensorFlow", "AI", "Computer Vision"],
-    features: [
-      "Real-time body part detection",
-      "Personalised therapy plans",
-      "Bluetooth wearable control",
-    ],
-    Icon: Activity,
-    github: "https://github.com",
-    demo: "https://example.com",
+    title: "InvoiceFlow",
+    tagline:
+      "An agent-based accounts-payable system. Upload a supplier invoice and an AI agent reads it, runs a 3-way match against the purchase order and delivery, then approves, holds or escalates it.",
+    tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "React", "Firestore", "Cloud Run"],
+    github: "https://github.com/tejas-sangale04/Invoice-to-payment-agent",
+    metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
+    detail: {
+      problem:
+        "Accounts-payable teams check every invoice by hand against what was ordered and what arrived. It is slow, and overcharges and duplicate invoices slip through.",
+      hard: "An LLM must never decide what to pay. Gemini only reads the invoice into a strict schema; code does every calculation, the match and the decision, and routes anything uncertain to a person. Posting runs in one Firestore transaction keyed by supplier and invoice number, so an invoice is paid exactly once even if two copies are approved at the same moment.",
+      diagram: <ArchitectureDiagram />,
+    },
   },
   {
-    title: "Personal Finance Dashboard",
-    description:
-      "Full-stack finance dashboard with bank sync, budgeting, analytics and rich transaction insights.",
-    tech: ["React", "Node.js", "Express", "MongoDB", "Plaid API"],
-    features: ["Plaid bank integration", "Budgets & analytics charts", "Secure auth sessions"],
-    Icon: LineChart,
-    github: "https://github.com",
-    demo: "https://example.com",
+    title: "Coffee Barista",
+    tagline:
+      "A RAG-based recommendation agent that suggests coffee from a customer's taste and context.",
+    tech: ["Python", "RAG", "Vector DB", "Gemini"],
+    github: "https://github.com/tejas-sangale04/Coffee-Barista",
   },
   {
-    title: "AI Interview Platform",
-    description:
-      "AI-powered interview preparation with resume analysis, mock interviews and detailed performance reports.",
+    title: "Interview AI",
+    tagline: "Interview practice with resume analysis, mock interviews and a performance report.",
     tech: ["React", "Node.js", "Gemini API", "MongoDB"],
-    features: ["Resume analysis", "AI interview reports", "Progress analytics"],
-    Icon: Bot,
-    github: "https://github.com",
-    demo: "https://example.com",
+    github: "https://github.com/tejas-sangale04/Interview-AI",
   },
   {
-    title: "Restaurant Booking System",
-    description:
-      "Table reservation platform with live availability, seat maps and automated confirmation emails.",
-    tech: ["Next.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
-    features: ["Live table availability", "Reservation management", "Email confirmations"],
-    Icon: UtensilsCrossed,
-    github: "https://github.com",
-    demo: "https://example.com",
-  },
-  {
-    title: "Learning Management System",
-    description:
-      "Course platform with role-based dashboards, video lessons, quizzes and progress tracking.",
-    tech: ["React", "Node.js", "MongoDB", "JWT"],
-    features: ["Role-based dashboards", "Quizzes & grading", "Progress tracking"],
-    Icon: GraduationCap,
-    github: "https://github.com",
-    demo: "https://example.com",
-  },
-  {
-    title: "Portfolio Website",
-    description:
-      "This site — a fast, accessible, animated portfolio built with a custom dark glassmorphism design system.",
-    tech: ["TanStack Start", "React", "TypeScript", "Tailwind CSS"],
-    features: ["Server-rendered & SEO ready", "Scroll-driven animations", "Lighthouse 95+ target"],
-    Icon: User,
-    github: "https://github.com",
-    demo: "https://example.com",
+    title: "Intrusion Detection System",
+    tagline: "Network intrusion detection with a Random Forest classifier.",
+    tech: ["Python", "scikit-learn", "Pandas"],
+    github: "https://github.com/tejas-sangale04/Intrusion-Detection-System-using-Random-Forest",
   },
 ];
 
-function updateSpotlight(e: MouseEvent<HTMLElement>) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-  e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+const ease = [0.16, 1, 0.3, 1] as const;
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const [open, setOpen] = useState(false);
+  const panelId = `project-${index}-detail`;
+
+  return (
+    <motion.li
+      className="group border-t border-border py-8"
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.6, delay: (index % 2) * 0.08, ease }}
+    >
+      <div className="grid gap-6 lg:grid-cols-[96px_1fr_auto] lg:items-start">
+        <span
+          className="font-hero text-3xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70"
+          style={{ fontStretch: "112%" }}
+          aria-hidden="true"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        <div>
+          <h3
+            className="font-hero text-3xl font-black tracking-[-0.02em] text-foreground sm:text-4xl"
+            style={{ fontStretch: "112%" }}
+          >
+            {project.title}
+          </h3>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {project.tagline}
+          </p>
+
+          {project.metric ? (
+            <p className="mt-5 inline-flex items-baseline gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
+              <span
+                className="font-hero text-xl font-black text-emerald-300"
+                style={{ fontStretch: "112%" }}
+              >
+                {project.metric.value}
+              </span>
+              <span className="text-xs text-muted-foreground">{project.metric.label}</span>
+            </p>
+          ) : null}
+
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {project.tech.map((t) => (
+              <li
+                key={t}
+                className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
+              >
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4 lg:justify-end">
+          {project.github ? (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Github className="size-4" /> Code
+            </a>
+          ) : null}
+          {project.demo ? (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ExternalLink className="size-4" /> Demo
+            </a>
+          ) : null}
+          {project.detail ? (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls={panelId}
+              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500/40 hover:text-emerald-200"
+            >
+              How it works
+              <ChevronDown
+                className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {open && project.detail ? (
+          <motion.div
+            id={panelId}
+            key="detail"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease }}
+            className="overflow-hidden"
+          >
+            <div className="mt-8 grid gap-8 rounded-3xl border border-border bg-background/50 p-6 sm:p-8 lg:grid-cols-[1fr_1.4fr]">
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    The problem
+                  </h4>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {project.detail.problem}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    The hard part
+                  </h4>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {project.detail.hard}
+                  </p>
+                </div>
+              </div>
+              {project.detail.diagram ? (
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    Architecture
+                  </h4>
+                  <div className="mt-4 overflow-x-auto">
+                    <div className="min-w-[560px]">{project.detail.diagram}</div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </motion.li>
+  );
 }
 
 export function Projects() {
   return (
-    <Section id="projects">
-      <SectionHeading
-        eyebrow="Projects"
-        title="Things I've designed and shipped"
-        description="A selection of full stack, mobile and AI projects — each built end to end, from data model to interface."
-      />
-
-      <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {PROJECTS.map((p, i) => (
-          <Reveal
-            key={p.title}
-            delay={i * 80}
-            as="article"
-            onMouseMove={updateSpotlight}
-            className="glass spotlight shine group flex flex-col overflow-hidden rounded-3xl transition-transform hover:-translate-y-1.5"
+    <section
+      id="projects"
+      className="relative isolate scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8"
+    >
+      <div aria-hidden="true" className="hero-grid absolute inset-0 -z-10" />
+      <div className="mx-auto w-full max-w-6xl">
+        <Reveal className="text-center">
+          <h2
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            style={{ fontStretch: "125%" }}
           >
-            <div className="relative flex aspect-video items-center justify-center bg-linear-to-br from-primary/25 via-primary/10 to-transparent">
-              <p.Icon className="size-10 text-primary" aria-hidden="true" />
-              <span className="absolute bottom-3 right-3 rounded-full bg-background/70 px-2.5 py-1 text-[10px] uppercase tracking-widest text-muted-foreground">
-                Preview coming soon
-              </span>
-            </div>
+            Projects
+          </h2>
+          <p className="mt-6 font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
+            Open a project to see how it's built
+          </p>
+        </Reveal>
 
-            <div className="flex flex-1 flex-col p-6">
-              <h3 className="text-lg font-semibold text-foreground">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
-
-              <ul className="mt-4 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <li key={t}>
-                    <Badge variant="secondary" className="rounded-full text-[11px] font-normal">
-                      {t}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-
-              <ul className="mt-5 grid gap-1.5 text-xs text-muted-foreground">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 flex gap-2 pt-2">
-                <Button asChild size="sm" variant="outline" className="flex-1 rounded-full">
-                  <a href={p.github} target="_blank" rel="noreferrer">
-                    <Github className="size-4" /> GitHub
-                  </a>
-                </Button>
-                <Button asChild size="sm" className="flex-1 rounded-full">
-                  <a href={p.demo} target="_blank" rel="noreferrer">
-                    <ExternalLink className="size-4" /> Live demo
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </Reveal>
-        ))}
+        <ul className="mt-14 border-b border-border">
+          {PROJECTS.map((p, i) => (
+            <ProjectCard key={p.title} project={p} index={i} />
+          ))}
+        </ul>
       </div>
-    </Section>
+    </section>
   );
 }
