@@ -149,7 +149,7 @@ export function SiteFooter() {
     <footer className="relative z-10 border-t border-border px-5 py-10 sm:px-8">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Aarav Deshmukh. Built with React & Tailwind CSS.
+          © {new Date().getFullYear()} Tejas Sangale. Built with React & Tailwind CSS.
         </p>
         <ul className="flex items-center gap-3">
           {SOCIALS.map((s) => (

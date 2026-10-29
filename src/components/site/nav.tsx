@@ -59,7 +59,7 @@ export function SiteNav() {
           <span className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary-glow text-primary-foreground">
             <Code2 className="size-4" />
           </span>
-          <span className="glow-text text-base">Aarav Deshmukh</span>
+          <span className="glow-text text-base">Tejas Sangale</span>
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">

@@ -332,7 +332,7 @@ function CardFront() {
       </div>
 
       <div className="flex flex-1 flex-col items-center px-5 pt-3 text-center">
-        <p className="text-lg font-bold leading-tight text-foreground">Aarav Deshmukh</p>
+        <p className="text-lg font-bold leading-tight text-foreground">Tejas Sangale</p>
         <p className="mt-1 text-xs font-medium text-primary">Full Stack Developer</p>
         <div className="mt-3 flex flex-wrap justify-center gap-1.5">
           {["React", "Node", "Python"].map((s) => (

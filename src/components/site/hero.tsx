@@ -65,7 +65,7 @@ export function Hero() {
           <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
             Hi, I'm{" "}
             <SparkleText>
-              <span className="glow-text text-glow">Aarav Deshmukh</span>
+              <span className="glow-text text-glow">Tejas Sangale</span>
             </SparkleText>
           </h1>
 
