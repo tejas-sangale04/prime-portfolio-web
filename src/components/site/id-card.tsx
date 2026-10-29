@@ -180,9 +180,26 @@ export function IdCard() {
     setDragging(true);
   };
 
+  // Hovering nudges the card: kick the lower rope points along the pointer's motion.
+  const push = (dx: number) => {
+    if (reduce || drag.current) return;
+    const p = pts.current;
+    for (let i = 1; i < POINTS; i++) p[i].px -= dx * (i / (POINTS - 1));
+  };
+
+  const onPointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    // Entering from the left swings it right, and vice versa.
+    push(e.clientX < r.left + r.width / 2 ? 7 : -7);
+  };
+
   const onPointerMove = (e: React.PointerEvent) => {
     const d = drag.current;
-    if (!d) return;
+    if (!d) {
+      if (e.pointerType === "mouse") push(Math.max(-1.5, Math.min(1.5, e.movementX * 0.12)));
+      return;
+    }
     const pos = toLocal(e);
     if (Math.hypot(pos.x - d.start.x, pos.y - d.start.y) > 5) d.moved = true;
     // Keep the strap from stretching much past its length.
@@ -264,6 +281,7 @@ export function IdCard() {
           }
           aria-pressed={flipped}
           onPointerDown={onPointerDown}
+          onPointerEnter={onPointerEnter}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
@@ -293,7 +311,7 @@ export function IdCard() {
       </div>
 
       <p className="pointer-events-none absolute inset-x-0 bottom-0 text-center text-[11px] text-muted-foreground/80">
-        {reduce ? "Click the card to flip it" : "Drag to swing · click to flip"}
+        {reduce ? "Click the card to flip it" : "Hover or drag to swing · click to flip"}
       </p>
     </div>
   );
