@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, ExternalLink, Github } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
 import { ArchitectureDiagram } from "@/components/site/architecture-diagram";
+import { FinanceArchitectureDiagram } from "@/components/site/finance-architecture-diagram";
 
 type Project = {
   title: string;
@@ -36,6 +37,19 @@ const PROJECTS: Project[] = [
         "Accounts-payable teams check every invoice by hand against what was ordered and what arrived. It is slow, and overcharges and duplicate invoices slip through.",
       hard: "An LLM must never decide what to pay. Gemini only reads the invoice into a strict schema; code does every calculation, the match and the decision, and routes anything uncertain to a person. Posting runs in one Firestore transaction keyed by supplier and invoice number, so an invoice is paid exactly once even if two copies are approved at the same moment.",
       diagram: <ArchitectureDiagram />,
+    },
+  },
+  {
+    title: "FinanceFlow",
+    tagline:
+      "A personal-finance dashboard that links a real bank account through Plaid, then reads balances and accounts behind a signed-in session. The bank access token is encrypted before it is ever stored.",
+    tech: ["React", "Vite", "Node.js", "Express", "MongoDB", "Plaid", "JWT", "Tailwind"],
+    github: "https://github.com/tejas-sangale04/financialDashboard",
+    detail: {
+      problem:
+        "Pulling your own spending into one place means handing an app read access to your bank. The moment it holds that access, the app is the weak point, so the interesting work is not the charts, it is keeping the credential safe.",
+      hard: "Plaid hands back one long-lived access token per linked bank, and it must never reach the browser. The public token is swapped for it server-side, encrypted with AES-256-CBC under a fresh random IV, and stored in a Mongo field marked select: false, so an ordinary query cannot read it back by accident. It is decrypted only in the request that calls Plaid. Sessions are split the same way: a 10-minute access token the client holds and a 30-day refresh token in an httpOnly cookie, so a leaked access token expires on its own.",
+      diagram: <FinanceArchitectureDiagram />,
     },
   },
   {
