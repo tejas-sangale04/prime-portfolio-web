@@ -42,13 +42,13 @@ const PROJECTS: Project[] = [
   {
     title: "FinanceFlow",
     tagline:
-      "A personal-finance dashboard that links a real bank account through Plaid, then reads balances and accounts behind a signed-in session. The bank access token is encrypted before it is ever stored.",
+      "A personal finance dashboard that pulls bank accounts, credit cards and investment platforms into one view, with secure account aggregation, transaction categorisation, budgets and net-worth charts.",
     tech: ["React", "Vite", "Node.js", "Express", "MongoDB", "Plaid", "JWT", "Tailwind"],
     github: "https://github.com/tejas-sangale04/financialDashboard",
     detail: {
       problem:
-        "Pulling your own spending into one place means handing an app read access to your bank. The moment it holds that access, the app is the weak point, so the interesting work is not the charts, it is keeping the credential safe.",
-      hard: "Plaid hands back one long-lived access token per linked bank, and it must never reach the browser. The public token is swapped for it server-side, encrypted with AES-256-CBC under a fresh random IV, and stored in a Mongo field marked select: false, so an ordinary query cannot read it back by accident. It is decrypted only in the request that calls Plaid. Sessions are split the same way: a 10-minute access token the client holds and a 30-day refresh token in an httpOnly cookie, so a leaked access token expires on its own.",
+        "Money is spread across several banks, cards and investment platforms, so nothing shows what you actually have or where it went this month. FinanceFlow aggregates all of it into one screen and keeps the APIs fast enough for the charts to stay responsive.",
+      hard: "Linking a real bank means holding a credential that must never reach the browser. Plaid's public token is exchanged on the server, and the access token it returns is encrypted with AES-256-CBC before it is stored and decrypted only for the call that uses it. The session is split the same way: a short-lived access token the client holds and a long refresh token in an httpOnly cookie, so a leaked token expires on its own.",
       diagram: <FinanceArchitectureDiagram />,
     },
   },

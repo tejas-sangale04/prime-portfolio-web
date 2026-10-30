@@ -1,122 +1,40 @@
 import { motion } from "motion/react";
 
 /*
- * Architecture diagram for FinanceFlow, drawn the same way as the InvoiceFlow
- * one: SVG so it stays sharp and themeable, boxes fading in in order and the
- * flow lines drawing themselves, with `motion` skipping both for
+ * Architecture diagram for FinanceFlow: one left-to-right flow, from the
+ * accounts it aggregates to the dashboard that draws them. Boxes fade in in
+ * order and the arrows draw themselves; `motion` skips both for
  * reduced-motion users.
  */
 
 type Node = {
-  id: string;
-  x: number;
-  y: number;
-  w: number;
   label: string;
-  sub?: string;
-  kind: "ui" | "api" | "plaid" | "crypto";
+  sub: string;
+  color: string;
 };
-
-const H = 46;
 
 const NODES: Node[] = [
-  { id: "ui", x: 10, y: 118, w: 128, label: "React UI", sub: "Plaid Link", kind: "ui" },
-  { id: "auth", x: 178, y: 20, w: 128, label: "Auth", sub: "bcrypt + JWT", kind: "api" },
-  {
-    id: "session",
-    x: 346,
-    y: 20,
-    w: 132,
-    label: "Session tokens",
-    sub: "10 min · 30 day cookie",
-    kind: "api",
-  },
-  { id: "api", x: 178, y: 118, w: 128, label: "Express API", sub: "auth guard", kind: "api" },
-  {
-    id: "exchange",
-    x: 346,
-    y: 118,
-    w: 132,
-    label: "Token exchange",
-    sub: "public → access",
-    kind: "plaid",
-  },
-  {
-    id: "crypto",
-    x: 522,
-    y: 118,
-    w: 136,
-    label: "AES-256-CBC",
-    sub: "random IV per token",
-    kind: "crypto",
-  },
-  { id: "store", x: 700, y: 118, w: 128, label: "MongoDB", sub: "select: false", kind: "crypto" },
-  {
-    id: "balances",
-    x: 522,
-    y: 216,
-    w: 136,
-    label: "Balances & accounts",
-    sub: "Plaid /auth",
-    kind: "plaid",
-  },
-  {
-    id: "decrypt",
-    x: 700,
-    y: 216,
-    w: 128,
-    label: "Decrypt on use",
-    sub: "never leaves server",
-    kind: "crypto",
-  },
+  { label: "Banks & cards", sub: "+ investments", color: "var(--color-chart-4)" },
+  { label: "Plaid", sub: "secure linking", color: "oklch(0.72 0.17 150)" },
+  { label: "Express API", sub: "categorise · budget", color: "var(--color-primary)" },
+  { label: "MongoDB", sub: "accounts · spending", color: "var(--color-chart-4)" },
+  { label: "React dashboard", sub: "net worth · charts", color: "var(--color-chart-2)" },
 ];
 
-const EDGES: [string, string][] = [
-  ["ui", "api"],
-  ["api", "auth"],
-  ["auth", "session"],
-  ["api", "exchange"],
-  ["exchange", "crypto"],
-  ["crypto", "store"],
-  ["store", "decrypt"],
-  ["decrypt", "balances"],
-];
-
-const FILL: Record<Node["kind"], string> = {
-  ui: "var(--color-chart-2)",
-  api: "var(--color-primary)",
-  plaid: "oklch(0.72 0.17 150)",
-  crypto: "var(--color-chart-4)",
-};
-
-const byId = (id: string) => NODES.find((n) => n.id === id)!;
-
-/** Orthogonal path between two boxes: across, then up or down, then across. */
-function edgePath(a: Node, b: Node) {
-  const [ay, by] = [a.y + H / 2, b.y + H / 2];
-  if (Math.abs(ay - by) < 2) {
-    // Side by side: draw from whichever edge faces the other box.
-    return b.x > a.x
-      ? `M ${a.x + a.w} ${ay} L ${b.x} ${by}`
-      : `M ${a.x} ${ay} L ${b.x + b.w} ${by}`;
-  }
-  const mid = b.x + b.w / 2;
-  if (mid > a.x && mid < a.x + a.w) {
-    // Directly above or below: one vertical line.
-    return `M ${mid} ${by < ay ? a.y : a.y + H} L ${mid} ${by < ay ? b.y + H : b.y}`;
-  }
-  const x = a.x + a.w + 18;
-  return `M ${a.x + a.w} ${ay} L ${x} ${ay} L ${x} ${by} L ${b.x} ${by}`;
-}
+const W = 140;
+const H = 56;
+const GAP = 32;
+const Y = 24;
+const X = (i: number) => 8 + i * (W + GAP);
 
 export function FinanceArchitectureDiagram() {
   return (
     <figure className="w-full">
       <svg
-        viewBox="0 0 838 282"
+        viewBox="0 0 844 104"
         className="w-full"
         role="img"
-        aria-label="FinanceFlow architecture: the React UI opens Plaid Link and calls the Express API, which signs the user in with bcrypt and issues a short access token plus a long refresh cookie. The API exchanges Plaid's public token for an access token, encrypts it with AES-256-CBC and stores it in MongoDB in a field that is never selected by default; it is decrypted only on the server when fetching balances and accounts from Plaid."
+        aria-label="FinanceFlow architecture: banks, cards and investment accounts are linked securely through Plaid, an Express API categorises the transactions and tracks budgets, the data is stored in MongoDB, and a React dashboard draws spending and net worth."
       >
         <defs>
           <marker
@@ -133,11 +51,13 @@ export function FinanceArchitectureDiagram() {
         </defs>
 
         <g className="text-muted-foreground/60">
-          {EDGES.map(([from, to], i) => (
-            <motion.path
-              key={`${from}-${to}`}
-              d={edgePath(byId(from), byId(to))}
-              fill="none"
+          {NODES.slice(1).map((n, i) => (
+            <motion.line
+              key={n.label}
+              x1={X(i) + W}
+              y1={Y + H / 2}
+              x2={X(i + 1)}
+              y2={Y + H / 2}
               stroke="currentColor"
               strokeWidth={1.5}
               strokeDasharray="4 4"
@@ -145,70 +65,49 @@ export function FinanceArchitectureDiagram() {
               initial={{ pathLength: 0, opacity: 0 }}
               whileInView={{ pathLength: 1, opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.25 + i * 0.12, ease: "easeOut" }}
+              transition={{ duration: 0.4, delay: 0.3 + i * 0.16, ease: "easeOut" }}
             />
           ))}
         </g>
 
         {NODES.map((n, i) => (
           <motion.g
-            key={n.id}
+            key={n.label}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.45, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.45, delay: i * 0.14, ease: [0.16, 1, 0.3, 1] }}
           >
             <rect
-              x={n.x}
-              y={n.y}
-              width={n.w}
+              x={X(i)}
+              y={Y}
+              width={W}
               height={H}
-              rx={12}
-              fill={FILL[n.kind]}
+              rx={14}
+              fill={n.color}
               fillOpacity={0.12}
-              stroke={FILL[n.kind]}
+              stroke={n.color}
               strokeOpacity={0.45}
             />
             <text
-              x={n.x + n.w / 2}
-              y={n.y + (n.sub ? 20 : 27)}
+              x={X(i) + W / 2}
+              y={Y + 25}
               textAnchor="middle"
-              className="fill-foreground text-[13px] font-semibold"
+              className="fill-foreground text-[14px] font-semibold"
             >
               {n.label}
             </text>
-            {n.sub ? (
-              <text
-                x={n.x + n.w / 2}
-                y={n.y + 34}
-                textAnchor="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {n.sub}
-              </text>
-            ) : null}
+            <text
+              x={X(i) + W / 2}
+              y={Y + 42}
+              textAnchor="middle"
+              className="fill-muted-foreground text-[11px]"
+            >
+              {n.sub}
+            </text>
           </motion.g>
         ))}
       </svg>
-
-      <figcaption className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
-        {(
-          [
-            ["ui", "Frontend"],
-            ["api", "Backend / auth"],
-            ["plaid", "Plaid"],
-            ["crypto", "Encrypted store"],
-          ] as [Node["kind"], string][]
-        ).map(([kind, label]) => (
-          <span key={kind} className="inline-flex items-center gap-2">
-            <span
-              className="size-2.5 rounded-full"
-              style={{ backgroundColor: FILL[kind], opacity: 0.8 }}
-            />
-            {label}
-          </span>
-        ))}
-      </figcaption>
     </figure>
   );
 }
