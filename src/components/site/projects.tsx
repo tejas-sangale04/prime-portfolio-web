@@ -29,7 +29,6 @@ const PROJECTS: Project[] = [
       "An agent-based accounts-payable system. Upload a supplier invoice and an AI agent reads it, runs a 3-way match against the purchase order and delivery, then approves, holds or escalates it.",
     tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "React", "Firestore", "Cloud Run"],
     github: "https://github.com/tejas-sangale04/Invoice-to-payment-agent",
-
     image: "/projects/invoiceflow.png",
     metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
     detail: {
@@ -38,6 +37,7 @@ const PROJECTS: Project[] = [
       hard: "An LLM must never decide what to pay. Gemini only reads the invoice into a strict schema; code does every calculation, the match and the decision, and routes anything uncertain to a person. Posting runs in one Firestore transaction keyed by supplier and invoice number, so an invoice is paid exactly once even if two copies are approved at the same moment.",
       diagram: <ArchitectureDiagram />,
     },
+    demo: "https://invoiceflow-web-6060358211.asia-south1.run.app/login",
   },
   {
     title: "FinanceFlow",
@@ -45,6 +45,8 @@ const PROJECTS: Project[] = [
       "A personal finance dashboard that pulls bank accounts, credit cards and investment platforms into one view, with secure account aggregation, transaction categorisation, budgets and net-worth charts.",
     tech: ["React", "Vite", "Node.js", "Express", "MongoDB", "Plaid", "JWT", "Tailwind"],
     github: "https://github.com/tejas-sangale04/financialDashboard",
+    image: "/projects/financeflow.png",
+    demo: "https://financial-dashboard-teal-eta.vercel.app/",
     detail: {
       problem:
         "Money is spread across several banks, cards and investment platforms, so nothing shows what you actually have or where it went this month. FinanceFlow aggregates all of it into one screen and keeps the APIs fast enough for the charts to stay responsive.",
