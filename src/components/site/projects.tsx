@@ -17,7 +17,8 @@ type Project = {
   metric?: { value: string; label: string };
   detail?: {
     problem: string;
-    hard: string;
+    /** One short paragraph each, so the panel stays readable at full width. */
+    hard: string[];
     diagram?: ReactNode;
   };
 };
@@ -34,7 +35,11 @@ const PROJECTS: Project[] = [
     detail: {
       problem:
         "Accounts-payable teams check every invoice by hand against what was ordered and what arrived. It is slow, and overcharges and duplicate invoices slip through.",
-      hard: "An LLM must never decide what to pay. Gemini only reads the invoice into a strict schema; code does every calculation, the match and the decision, and routes anything uncertain to a person. Posting runs in one Firestore transaction keyed by supplier and invoice number, so an invoice is paid exactly once even if two copies are approved at the same moment.",
+      hard: [
+        "An LLM must never decide what to pay.",
+        "Gemini only reads the invoice into a strict schema. Code does every calculation, the match and the decision, and anything uncertain goes to a person.",
+        "Posting runs in one Firestore transaction keyed by supplier and invoice number, so an invoice is paid exactly once even if two copies are approved at the same moment.",
+      ],
       diagram: <ArchitectureDiagram />,
     },
     demo: "https://invoiceflow-web-6060358211.asia-south1.run.app/login",
@@ -50,7 +55,11 @@ const PROJECTS: Project[] = [
     detail: {
       problem:
         "Money is spread across several banks, cards and investment platforms, so nothing shows what you actually have or where it went this month. FinanceFlow aggregates all of it into one screen and keeps the APIs fast enough for the charts to stay responsive.",
-      hard: "Linking a real bank means holding a credential that must never reach the browser. Plaid's public token is exchanged on the server, and the access token it returns is encrypted with AES-256-CBC before it is stored and decrypted only for the call that uses it. The session is split the same way: a short-lived access token the client holds and a long refresh token in an httpOnly cookie, so a leaked token expires on its own.",
+      hard: [
+        "Linking a real bank means holding a credential that must never reach the browser.",
+        "Plaid's public token is exchanged on the server. The access token it returns is encrypted with AES-256-CBC before it is stored, and decrypted only for the call that uses it.",
+        "The session is split the same way: a short-lived access token the client holds, and a long refresh token in an httpOnly cookie, so a leaked token expires on its own.",
+      ],
       diagram: (
         <FlowDiagram
           label="FinanceFlow architecture: banks, cards and investment accounts are linked securely through Plaid, an Express API categorises the transactions and tracks budgets, the data is stored in MongoDB, and a React dashboard draws spending and net worth."
@@ -74,7 +83,11 @@ const PROJECTS: Project[] = [
     detail: {
       problem:
         "A recommendation only helps if it is real. Ask a plain chatbot for a cold vegan coffee under \u20b9400 and it will happily invent a drink, a price and a calorie count that the shop has never sold.",
-      hard: "Nothing the model says is trusted on its own. A guardrail agent first decides whether the question is even about coffee, a preference agent turns it into a structured set of constraints, and Firestore vector search pulls semantically similar menu items. Those candidates then go through deterministic Python filtering on price, diet, calories and availability, and the recommendation the model writes is validated back against the retrieved items before it reaches the user, so a wrong name or price cannot get through.",
+      hard: [
+        "Nothing the model says is trusted on its own.",
+        "A guardrail agent first decides whether the question is even about coffee. A preference agent turns it into a structured set of constraints, and Firestore vector search pulls semantically similar menu items.",
+        "Those candidates then go through plain Python filtering on price, diet, calories and availability, and the recommendation the model writes is checked back against the retrieved items \u2014 so a wrong name or price cannot get through.",
+      ],
       diagram: (
         <FlowDiagram
           label="Coffee Barista architecture: a guardrail agent checks the question is about coffee, a preference agent extracts structured constraints, Firestore vector search retrieves similar menu items, deterministic Python filtering applies the hard constraints, and the recommendation agent's answer is validated against the retrieved items."
@@ -99,7 +112,11 @@ const PROJECTS: Project[] = [
     detail: {
       problem:
         "Interview prep is generic: question lists that ignore your resume and the role you are actually applying for, with no sense of what you are weakest at or what to study first.",
-      hard: "The report is a deep, nested object — questions with their intent and a model answer, skill gaps with a severity, a numbered plan — and a language model will not return the same shape twice. It answers in snake_case one time and camelCase the next, sends a bare string where an array of objects belongs, or wraps JSON inside a JSON string. The schema is declared with Zod, and everything that comes back is unwrapped, renamed and rebuilt into that schema before it touches the database, with a second model wired in as a fallback. A shared budget on the API key is counted in MongoDB so a public demo cannot run up the bill.",
+      hard: [
+        "The report is a deep, nested object: questions with their intent and a model answer, skill gaps with a severity, a numbered plan.",
+        "A language model will not return the same shape twice. It answers in snake_case one time and camelCase the next, sends a bare string where an array of objects belongs, or wraps JSON inside a JSON string.",
+        "So the schema is declared with Zod, and everything that comes back is unwrapped, renamed and rebuilt to fit it before it touches the database, with a second model wired in as a fallback. A shared budget on the API key is counted in MongoDB, so a public demo cannot run up the bill.",
+      ],
       diagram: (
         <FlowDiagram
           label="Interview AI architecture: a resume PDF and a target role are uploaded, the PDF text is extracted, a language model returns a structured report, the response is normalised and validated against a Zod schema, and the report is stored in MongoDB and shown in the React app."
@@ -124,7 +141,11 @@ const PROJECTS: Project[] = [
     detail: {
       problem:
         "Intrusion detectors are reported by their accuracy on the attacks they were trained on, which says almost nothing about the attack nobody has seen yet. The question this project set out to answer is what happens on the second kind.",
-      hard: "Measuring the gap honestly, and then trying to close it. Holding an entire attack family out of training drops recall on it to near zero \u2014 0% on Bot, 0.07% on brute force \u2014 so a benign-only Isolation Forest was added to flag what simply looks unusual; at a 5% false-positive budget the hybrid recovers 82% of unseen DDoS and 54% of unseen DoS, and almost nothing on the rest. SHAP then showed why: for web attacks the classifier leans on a timing feature that looks like an artefact of how the dataset was recorded. Every number is reproduced by the code in the repo, and the deployed API replays all 378,355 test flows to the same results.",
+      hard: [
+        "The hard part was measuring the gap honestly, and then trying to close it.",
+        "Hold an entire attack family out of training and recall on it drops to near zero \u2014 0% on Bot, 0.07% on brute force. A benign-only Isolation Forest was added to flag what simply looks unusual; at a 5% false-positive budget the hybrid recovers 82% of unseen DDoS and 54% of unseen DoS, and almost nothing on the rest.",
+        "SHAP then showed why: for web attacks the classifier leans on a timing feature that looks like an artefact of how the dataset was recorded. Every number is reproduced by the code in the repo, and the deployed API replays all 378,355 test flows to the same results.",
+      ],
       diagram: (
         <FlowDiagram
           label="Intrusion detection architecture: CIC-IDS2017 flow records are cleaned, de-duplicated and split, a Random Forest and a benign-only Isolation Forest score each flow, SHAP explains the decision, and a FastAPI service feeds a React dashboard replaying the traffic."
@@ -270,36 +291,36 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             className="overflow-hidden"
           >
             <div className="mt-8 space-y-10 rounded-3xl border border-border bg-background/50 p-6 sm:p-8">
-              <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                      The problem
-                    </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {project.detail.problem}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                      The hard part
-                    </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {project.detail.hard}
-                    </p>
+              <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    The problem
+                  </h4>
+                  <p className="mt-4 max-w-prose text-[15px] leading-7 text-muted-foreground">
+                    {project.detail.problem}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    The hard part
+                  </h4>
+                  <div className="mt-4 max-w-prose space-y-4 text-[15px] leading-7 text-muted-foreground">
+                    {project.detail.hard.map((para) => (
+                      <p key={para}>{para}</p>
+                    ))}
                   </div>
                 </div>
-                {project.detail.diagram ? (
-                  <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                      Architecture
-                    </h4>
-                    <div className="mt-4 overflow-x-auto">
-                      <div className="min-w-[560px]">{project.detail.diagram}</div>
-                    </div>
-                  </div>
-                ) : null}
               </div>
+              {project.detail.diagram ? (
+                <div>
+                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    Architecture
+                  </h4>
+                  <div className="mt-5 overflow-x-auto">
+                    <div className="min-w-[620px]">{project.detail.diagram}</div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </motion.div>
         ) : null}
