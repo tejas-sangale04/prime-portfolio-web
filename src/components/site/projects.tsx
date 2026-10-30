@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, ExternalLink, Github } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
 import { ArchitectureDiagram } from "@/components/site/architecture-diagram";
-import { FinanceArchitectureDiagram } from "@/components/site/finance-architecture-diagram";
+import { FlowDiagram } from "@/components/site/flow-diagram";
 
 type Project = {
   title: string;
@@ -51,27 +51,93 @@ const PROJECTS: Project[] = [
       problem:
         "Money is spread across several banks, cards and investment platforms, so nothing shows what you actually have or where it went this month. FinanceFlow aggregates all of it into one screen and keeps the APIs fast enough for the charts to stay responsive.",
       hard: "Linking a real bank means holding a credential that must never reach the browser. Plaid's public token is exchanged on the server, and the access token it returns is encrypted with AES-256-CBC before it is stored and decrypted only for the call that uses it. The session is split the same way: a short-lived access token the client holds and a long refresh token in an httpOnly cookie, so a leaked token expires on its own.",
-      diagram: <FinanceArchitectureDiagram />,
+      diagram: (
+        <FlowDiagram
+          label="FinanceFlow architecture: banks, cards and investment accounts are linked securely through Plaid, an Express API categorises the transactions and tracks budgets, the data is stored in MongoDB, and a React dashboard draws spending and net worth."
+          nodes={[
+            { label: "Banks & cards", sub: "+ investments", tone: "source" },
+            { label: "Plaid", sub: "secure linking", tone: "ai" },
+            { label: "Express API", sub: "categorise · budget", tone: "api" },
+            { label: "MongoDB", sub: "accounts · spending", tone: "store" },
+            { label: "React dashboard", sub: "net worth · charts", tone: "ui" },
+          ]}
+        />
+      ),
     },
   },
   {
     title: "Coffee Barista",
     tagline:
-      "A RAG-based recommendation agent that suggests coffee from a customer's taste and context.",
-    tech: ["Python", "RAG", "Vector DB", "Gemini"],
+      "Ask for coffee the way you would ask a barista — \u201ca cold vegan one under \u20b9400\u201d — and a chain of agents reads the request, searches a real menu by meaning and recommends from it.",
+    tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "RAG", "Firestore", "Streamlit"],
     github: "https://github.com/tejas-sangale04/Coffee-Barista",
+    detail: {
+      problem:
+        "A recommendation only helps if it is real. Ask a plain chatbot for a cold vegan coffee under \u20b9400 and it will happily invent a drink, a price and a calorie count that the shop has never sold.",
+      hard: "Nothing the model says is trusted on its own. A guardrail agent first decides whether the question is even about coffee, a preference agent turns it into a structured set of constraints, and Firestore vector search pulls semantically similar menu items. Those candidates then go through deterministic Python filtering on price, diet, calories and availability, and the recommendation the model writes is validated back against the retrieved items before it reaches the user, so a wrong name or price cannot get through.",
+      diagram: (
+        <FlowDiagram
+          label="Coffee Barista architecture: a guardrail agent checks the question is about coffee, a preference agent extracts structured constraints, Firestore vector search retrieves similar menu items, deterministic Python filtering applies the hard constraints, and the recommendation agent's answer is validated against the retrieved items."
+          nodes={[
+            { label: "Question", sub: "natural language", tone: "source" },
+            { label: "Guardrail", sub: "+ preferences", tone: "ai" },
+            { label: "Vector search", sub: "Firestore · cosine", tone: "store" },
+            { label: "Hard filter", sub: "code, not LLM", tone: "api" },
+            { label: "Recommend", sub: "then validate", tone: "ai" },
+          ]}
+        />
+      ),
+    },
   },
   {
     title: "Interview AI",
-    tagline: "Interview practice with resume analysis, mock interviews and a performance report.",
-    tech: ["React", "Node.js", "Gemini API", "MongoDB"],
+    tagline:
+      "Upload a resume and a target role, and get back a match score, technical and behavioural questions with model answers, your skill gaps and a day-by-day preparation plan.",
+    tech: ["React", "Node.js", "Express", "OpenAI", "MongoDB", "Puppeteer", "Zod"],
     github: "https://github.com/tejas-sangale04/Interview-AI",
+    demo: "https://interview-ai-five-gamma.vercel.app",
+    detail: {
+      problem:
+        "Interview prep is generic: question lists that ignore your resume and the role you are actually applying for, with no sense of what you are weakest at or what to study first.",
+      hard: "The report is a deep, nested object — questions with their intent and a model answer, skill gaps with a severity, a numbered plan — and a language model will not return the same shape twice. It answers in snake_case one time and camelCase the next, sends a bare string where an array of objects belongs, or wraps JSON inside a JSON string. The schema is declared with Zod, and everything that comes back is unwrapped, renamed and rebuilt into that schema before it touches the database, with a second model wired in as a fallback. A shared budget on the API key is counted in MongoDB so a public demo cannot run up the bill.",
+      diagram: (
+        <FlowDiagram
+          label="Interview AI architecture: a resume PDF and a target role are uploaded, the PDF text is extracted, a language model returns a structured report, the response is normalised and validated against a Zod schema, and the report is stored in MongoDB and shown in the React app."
+          nodes={[
+            { label: "Resume + role", sub: "PDF upload", tone: "source" },
+            { label: "Extract text", sub: "pdf-parse", tone: "api" },
+            { label: "LLM report", sub: "schema-guided", tone: "ai" },
+            { label: "Normalise", sub: "Zod validate", tone: "api" },
+            { label: "MongoDB", sub: "report · history", tone: "store" },
+          ]}
+        />
+      ),
+    },
   },
   {
     title: "Intrusion Detection System",
-    tagline: "Network intrusion detection with a Random Forest classifier.",
-    tech: ["Python", "scikit-learn", "Pandas"],
+    tagline:
+      "An explainable hybrid network intrusion detector on the CIC-IDS2017 flow dataset: a supervised Random Forest, an unsupervised Isolation Forest for the unknown, SHAP explanations, and a dashboard that replays real traffic.",
+    tech: ["Python", "scikit-learn", "SHAP", "FastAPI", "React", "pandas"],
     github: "https://github.com/tejas-sangale04/Intrusion-Detection-System-using-Random-Forest",
+    metric: { value: "99.6%", label: "recall on known attacks, at a 0.09% false-positive rate" },
+    detail: {
+      problem:
+        "Intrusion detectors are reported by their accuracy on the attacks they were trained on, which says almost nothing about the attack nobody has seen yet. The question this project set out to answer is what happens on the second kind.",
+      hard: "Measuring the gap honestly, and then trying to close it. Holding an entire attack family out of training drops recall on it to near zero \u2014 0% on Bot, 0.07% on brute force \u2014 so a benign-only Isolation Forest was added to flag what simply looks unusual; at a 5% false-positive budget the hybrid recovers 82% of unseen DDoS and 54% of unseen DoS, and almost nothing on the rest. SHAP then showed why: for web attacks the classifier leans on a timing feature that looks like an artefact of how the dataset was recorded. Every number is reproduced by the code in the repo, and the deployed API replays all 378,355 test flows to the same results.",
+      diagram: (
+        <FlowDiagram
+          label="Intrusion detection architecture: CIC-IDS2017 flow records are cleaned, de-duplicated and split, a Random Forest and a benign-only Isolation Forest score each flow, SHAP explains the decision, and a FastAPI service feeds a React dashboard replaying the traffic."
+          nodes={[
+            { label: "Flow records", sub: "CIC-IDS2017", tone: "source" },
+            { label: "Clean & split", sub: "leakage-safe", tone: "api" },
+            { label: "RF + anomaly", sub: "known · unknown", tone: "ai" },
+            { label: "SHAP", sub: "why it flagged", tone: "store" },
+            { label: "Dashboard", sub: "FastAPI · React", tone: "ui" },
+          ]}
+        />
+      ),
+    },
   },
 ];
 
