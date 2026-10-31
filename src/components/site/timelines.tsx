@@ -1,12 +1,12 @@
+import { motion } from "motion/react";
 import {
   Award,
   Briefcase,
   Code2,
   GitPullRequest,
+  GraduationCap,
   Medal,
-  Star,
   Trophy,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 import { Reveal, Section, SectionHeading } from "@/components/site/reveal";
@@ -50,41 +50,37 @@ const EXPERIENCE: Entry[] = [
   },
 ];
 
-const ACHIEVEMENTS: Entry[] = [
+type Achievement = {
+  title: string;
+  meta: string;
+  Icon: LucideIcon;
+};
+
+const ACHIEVEMENTS: Achievement[] = [
   {
-    title: "State Level Karate Champion",
+    title: "500+ DSA problems solved",
+    meta: "LeetCode \u00b7 HackerRank \u00b7 CodeChef",
+    Icon: Code2,
+  },
+  {
+    title: "State-Level Karate Champion",
     meta: "Martial arts",
-    period: "Championship",
-    copy: "Years of disciplined training turned into a state level title — the same discipline I bring to engineering.",
     Icon: Medal,
   },
   {
-    title: "MHT CET 95+ Percentile",
-    meta: "Engineering entrance exam",
-    period: "Academics",
-    copy: "Ranked in the top percentile among lakhs of candidates across the state.",
-    Icon: Star,
+    title: "2nd Rank in HSC",
+    meta: "D.D. Bytco Boys High School & Jr. College",
+    Icon: GraduationCap,
   },
   {
-    title: "Competitive Programming",
-    meta: "LeetCode · Codeforces",
-    period: "Ongoing",
-    copy: "500+ problems solved, with regular participation in rated contests and weekly challenges.",
-    Icon: Award,
-  },
-  {
-    title: "Hackathon Participation",
-    meta: "Team lead & developer",
-    period: "Multiple events",
-    copy: "Consistent participant, shipping working prototypes and presenting them to judging panels.",
+    title: "3rd Rank, Data Science & Big Data Competition",
+    meta: "KKWIEER",
     Icon: Trophy,
   },
   {
-    title: "Technical Club Member",
-    meta: "Campus developer community",
-    period: "Ongoing",
-    copy: "Organise workshops and mentor juniors on web development and data structures.",
-    Icon: Users,
+    title: "95+ percentile, MHT CET",
+    meta: "State engineering entrance exam",
+    Icon: Award,
   },
 ];
 
@@ -101,9 +97,7 @@ function Timeline({ entries }: { entries: Entry[] }) {
               <h3 className="text-base font-semibold text-foreground">{e.title}</h3>
               <span className="text-xs font-medium text-primary">{e.period}</span>
             </div>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
-              {e.meta}
-            </p>
+            <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">{e.meta}</p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{e.copy}</p>
           </div>
         </Reveal>
@@ -127,17 +121,63 @@ export function Experience() {
   );
 }
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 export function Achievements() {
   return (
-    <Section id="achievements">
-      <SectionHeading
-        eyebrow="Achievements"
-        title="Milestones worth marking"
-        description="Wins inside and outside the terminal."
-      />
-      <div className="mx-auto max-w-3xl">
-        <Timeline entries={ACHIEVEMENTS} />
+    <section
+      id="achievements"
+      className="relative isolate scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8"
+    >
+      <div aria-hidden="true" className="hero-grid absolute inset-0 -z-10" />
+      <div className="mx-auto w-full max-w-6xl">
+        <Reveal className="text-center">
+          <h2
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            style={{ fontStretch: "125%" }}
+          >
+            Achievements
+          </h2>
+          <p className="mt-6 font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
+            Wins inside and outside the terminal
+          </p>
+        </Reveal>
+
+        <ol className="mx-auto mt-14 max-w-4xl border-b border-border">
+          {ACHIEVEMENTS.map((a, i) => (
+            <motion.li
+              key={a.title}
+              className="group flex items-center gap-5 border-t border-border py-6 sm:gap-7"
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.55, delay: i * 0.07, ease }}
+            >
+              <span
+                className="font-hero text-2xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70 sm:text-3xl"
+                style={{ fontStretch: "112%" }}
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
+                <a.Icon className="size-5" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <h3
+                  className="font-hero text-lg font-black tracking-[-0.01em] text-foreground sm:text-xl"
+                  style={{ fontStretch: "112%" }}
+                >
+                  {a.title}
+                </h3>
+                <p className="mt-1 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+                  {a.meta}
+                </p>
+              </div>
+            </motion.li>
+          ))}
+        </ol>
       </div>
-    </Section>
+    </section>
   );
 }

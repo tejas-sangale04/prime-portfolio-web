@@ -294,6 +294,8 @@ export function IdCard() {
           className={cn(
             "relative -mt-1 touch-none rounded-3xl outline-none [perspective:1200px] focus-visible:ring-2 focus-visible:ring-ring",
             dragging ? "cursor-grabbing" : "cursor-grab",
+            // Lift the card toward the viewer on hover, as on the reference site.
+            reduce ? "" : "transition-transform duration-500 ease-out hover:scale-[1.07]",
           )}
           style={{ height: h }}
         >
@@ -331,7 +333,7 @@ function CardFront() {
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
               Developer pass
             </p>
-            <p className="mt-0.5 text-sm font-bold">AD · 2026</p>
+            <p className="mt-0.5 text-sm font-bold">TS · 2026</p>
           </div>
           {/* chip */}
           <div className="grid h-7 w-9 grid-cols-3 gap-px overflow-hidden rounded-md bg-amber-200/90 p-0.5">
@@ -345,7 +347,7 @@ function CardFront() {
       {/* avatar overlapping band */}
       <div className="relative z-10 -mt-11 flex justify-center">
         <div className="flex size-22 items-center justify-center rounded-full border-4 border-card bg-gradient-to-br from-secondary to-accent text-2xl font-bold text-foreground shadow-lg">
-          AD
+          TS
         </div>
       </div>
 
