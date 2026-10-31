@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, ExternalLink, Github } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
+import { cn } from "@/lib/utils";
 import { ArchitectureDiagram } from "@/components/site/architecture-diagram";
 import { FlowDiagram } from "@/components/site/flow-diagram";
 
@@ -209,87 +210,77 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <motion.li
-      className="group border-t border-border py-8"
+      className={cn(
+        "group flex flex-col overflow-hidden rounded-3xl border border-border bg-background/40 transition-colors hover:border-emerald-500/30",
+        // An open card takes the full row so the architecture diagram has room.
+        open ? "lg:col-span-2" : "",
+      )}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.6, delay: (index % 2) * 0.08, ease }}
     >
-      <div className="grid gap-6 lg:grid-cols-[72px_1fr_1.05fr] lg:items-start">
-        <span
-          className="font-hero text-3xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70"
-          style={{ fontStretch: "112%" }}
+      {project.image ? (
+        <a
+          href={project.demo ?? project.github ?? project.image}
+          target="_blank"
+          rel="noreferrer"
+          className="block aspect-[16/10] max-h-[460px] overflow-hidden border-b border-border bg-black/40 p-2"
+          tabIndex={-1}
           aria-hidden="true"
         >
-          {String(index + 1).padStart(2, "0")}
-        </span>
+          <img
+            src={project.image}
+            alt=""
+            loading="lazy"
+            className="size-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        </a>
+      ) : null}
 
-        <div>
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
+        <div className="flex items-baseline gap-3">
+          <span
+            className="font-hero text-xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70"
+            style={{ fontStretch: "112%" }}
+            aria-hidden="true"
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
           <h3
-            className="font-hero text-3xl font-black tracking-[-0.02em] text-foreground sm:text-4xl"
+            className="font-hero text-2xl font-black tracking-[-0.02em] text-foreground sm:text-3xl"
             style={{ fontStretch: "112%" }}
           >
             {project.title}
           </h3>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            {project.tagline}
-          </p>
-
-          {project.metric ? (
-            <p className="mt-5 inline-flex items-baseline gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
-              <span
-                className="font-hero text-xl font-black text-emerald-300"
-                style={{ fontStretch: "112%" }}
-              >
-                {project.metric.value}
-              </span>
-              <span className="text-xs text-muted-foreground">{project.metric.label}</span>
-            </p>
-          ) : null}
-
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {project.tech.map((t) => (
-              <li
-                key={t}
-                className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {project.image ? (
-          <motion.a
-            href={project.demo ?? project.github ?? project.image}
-            target="_blank"
-            rel="noreferrer"
-            className="order-last block overflow-hidden rounded-2xl border border-border bg-background/50 lg:order-none lg:col-start-3 lg:row-span-2"
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.1, ease }}
-          >
-            <img
-              src={project.image}
-              alt={`${project.title} screenshot`}
-              loading="lazy"
-              className="w-full transition-transform duration-500 hover:scale-[1.02]"
-            />
-          </motion.a>
+        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">{project.tagline}</p>
+
+        {project.metric ? (
+          <p className="mt-5 inline-flex flex-wrap items-baseline gap-2.5 self-start rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
+            <span
+              className="font-hero text-xl font-black text-emerald-300"
+              style={{ fontStretch: "112%" }}
+            >
+              {project.metric.value}
+            </span>
+            <span className="text-xs text-muted-foreground">{project.metric.label}</span>
+          </p>
         ) : null}
 
-        <div className="flex flex-wrap items-center gap-4 lg:col-span-2 lg:col-start-2">
-          {project.github ? (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        <ul className="mt-5 mb-7 flex flex-wrap gap-2">
+          {project.tech.map((t) => (
+            <li
+              key={t}
+              className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
             >
-              <Github className="size-4" /> Code
-            </a>
-          ) : null}
+              {t}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-border pt-5">
           {project.demo ? (
             <a
               href={project.demo}
@@ -315,6 +306,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               />
             </button>
           ) : null}
+          {project.github ? (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="ml-auto inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Github className="size-4" /> Code
+            </a>
+          ) : null}
         </div>
       </div>
 
@@ -327,9 +328,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.45, ease }}
-            className="overflow-hidden"
+            className="overflow-hidden border-t border-border bg-background/50"
           >
-            <div className="mt-8 space-y-10 rounded-3xl border border-border bg-background/50 p-6 sm:p-8">
+            <div className="space-y-10 p-6 sm:p-8">
               <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
                 <div>
                   <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
@@ -388,7 +389,7 @@ export function Projects() {
           </p>
         </Reveal>
 
-        <ul className="mt-14 border-b border-border">
+        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
           {PROJECTS.map((p, i) => (
             <ProjectCard key={p.title} project={p} index={i} />
           ))}

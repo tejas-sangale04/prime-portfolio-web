@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Github, Linkedin, Mail, MapPin, Phone, Send, Code2, Trophy, Terminal } from "lucide-react";
+import { Github, Linkedin, Mail, Send, Code2, Trophy, Terminal } from "lucide-react";
 import { toast } from "sonner";
 import { Reveal, Section, SectionHeading } from "@/components/site/reveal";
 import { Button } from "@/components/ui/button";
@@ -7,15 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const DETAILS = [
-  { Icon: Mail, label: "Email", value: "hello@example.com", href: "mailto:hello@example.com" },
-  { Icon: Phone, label: "Phone", value: "+91 90000 00000", href: "tel:+919000000000" },
-  { Icon: MapPin, label: "Location", value: "Pune, Maharashtra, India" },
-];
+/**
+ * Where the contact form sends to. Taken from the commit history of this repo;
+ * change this one line to use a different address.
+ */
+const CONTACT_EMAIL = "tejassangale90@gmail.com";
 
 export const SOCIALS = [
   { label: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
-  { label: "GitHub", href: "https://github.com", Icon: Github },
+  { label: "GitHub", href: "https://github.com/tejas-sangale04", Icon: Github },
   { label: "LeetCode", href: "https://leetcode.com", Icon: Code2 },
   { label: "Codeforces", href: "https://codeforces.com", Icon: Trophy },
   { label: "HackerRank", href: "https://hackerrank.com", Icon: Terminal },
@@ -28,14 +28,14 @@ export function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = encodeURIComponent(String(data.get("subject") ?? ""));
+    const subject = encodeURIComponent(`Portfolio message from ${data.get("name")}`);
     const body = encodeURIComponent(
       `From: ${data.get("name")} (${data.get("email")})\n\n${data.get("message")}`,
     );
     setSending(true);
-    window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
     toast.success("Opening your email client…", {
-      description: "If nothing happens, write to hello@example.com directly.",
+      description: `If nothing happens, write to ${CONTACT_EMAIL} directly.`,
     });
     form.reset();
     setSending(false);
@@ -49,7 +49,7 @@ export function Contact() {
         description="Open to internships, freelance projects and collaboration on interesting problems."
       />
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="mx-auto mt-14 w-full max-w-2xl">
         <Reveal className="glass rounded-3xl p-7">
           <form onSubmit={onSubmit} className="grid gap-5">
             <div className="grid gap-5 sm:grid-cols-2">
@@ -69,15 +69,6 @@ export function Contact() {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="contact-subject">Subject</Label>
-              <Input
-                id="contact-subject"
-                name="subject"
-                required
-                placeholder="What is this about?"
-              />
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="contact-message">Message</Label>
               <Textarea
                 id="contact-message"
@@ -93,52 +84,30 @@ export function Contact() {
           </form>
         </Reveal>
 
-        <div className="grid content-start gap-4">
-          {DETAILS.map((d, i) => (
-            <Reveal key={d.label} delay={i * 90} className="glass rounded-3xl p-6">
-              <div className="flex items-center gap-4">
-                <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                  <d.Icon className="size-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                    {d.label}
-                  </p>
-                  {d.href ? (
-                    <a
-                      href={d.href}
-                      className="text-sm font-medium text-foreground hover:text-primary"
-                    >
-                      {d.value}
-                    </a>
-                  ) : (
-                    <p className="text-sm font-medium text-foreground">{d.value}</p>
-                  )}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-
-          <Reveal delay={280} className="glass rounded-3xl p-6">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">Find me on</p>
-            <ul className="mt-4 flex flex-wrap gap-3">
-              {SOCIALS.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={s.label}
-                    title={s.label}
-                    className="flex size-11 items-center justify-center rounded-xl bg-secondary/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:text-primary"
-                  >
-                    <s.Icon className="size-5" aria-hidden="true" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
+        <Reveal delay={120} className="mt-8 flex flex-col items-center gap-5">
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-emerald-200"
+          >
+            <Mail className="size-4" aria-hidden="true" /> {CONTACT_EMAIL}
+          </a>
+          <ul className="flex flex-wrap justify-center gap-3">
+            {SOCIALS.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="flex size-11 items-center justify-center rounded-xl bg-secondary/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:text-primary"
+                >
+                  <s.Icon className="size-5" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </Section>
   );
