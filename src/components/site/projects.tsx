@@ -105,7 +105,7 @@ const PROJECTS: Project[] = [
     },
   },
   {
-    title: "Vrundavan",
+    title: "Vrundavan Hotel",
     tagline:
       "A full-stack restaurant management app that streamlines order processing and automates inventory tracking, behind a responsive, SEO-optimised Next.js site \u2014 in English, Marathi and Hindi.",
     tech: ["Next.js", "TypeScript", "Prisma", "MongoDB", "NextAuth", "Tailwind", "Radix UI"],

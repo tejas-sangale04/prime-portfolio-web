@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { BadgeCheck, Code2, Coffee, Cpu, Globe, ExternalLink } from "lucide-react";
+import { BadgeCheck, Code2, Coffee, Cpu, Globe, ExternalLink, CpuIcon, CloudAlert, CloudBackup, CloudCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
 
@@ -7,7 +7,7 @@ import { Reveal } from "@/components/site/reveal";
  * Drive folder holding the certificate PDFs. Paste the share link here and
  * the "View all certificates" button appears at the bottom of the section.
  */
-const ALL_CERTIFICATES_URL = "";
+const ALL_CERTIFICATES_URL = "https://drive.google.com/drive/folders/1XHhX6jApPmAHy1OYMf-Q8ddE8kbZqF_b?usp=drive_link";
 
 type Cert = {
   title: string;
@@ -20,12 +20,12 @@ const CERTS: Cert[] = [
   { title: "Programming in Java", issuer: "NPTEL", year: "2024", Icon: Coffee },
   { title: "Modern C++", issuer: "NPTEL", year: "2024", Icon: Code2 },
   {
-    title: "Full Stack Web Development",
+    title: "AWS Clouds Foundations",
     issuer: "Online certification",
-    year: "2024",
-    Icon: Globe,
+    year: "2025",
+    Icon: CloudCheck,
   },
-  { title: "AI & Machine Learning", issuer: "Online certification", year: "2025", Icon: Cpu },
+  { title: "Agentic AI Associate", issuer: "Oracle", year: "2026", Icon: CpuIcon },
 ];
 
 const ease = [0.16, 1, 0.3, 1] as const;
