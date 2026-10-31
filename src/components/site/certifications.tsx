@@ -50,7 +50,7 @@ export function Certifications() {
           </p>
         </Reveal>
 
-        <ul className="mt-14 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <ul className="mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-2">
           {CERTS.map((c, i) => (
             <motion.li
               key={c.title}
@@ -80,8 +80,8 @@ export function Certifications() {
           ))}
         </ul>
 
-        {ALL_CERTIFICATES_URL ? (
-          <Reveal delay={120} className="mt-12 text-center">
+        <Reveal delay={120} className="mt-12 text-center">
+          {ALL_CERTIFICATES_URL ? (
             <a
               href={ALL_CERTIFICATES_URL}
               target="_blank"
@@ -90,8 +90,17 @@ export function Certifications() {
             >
               <ExternalLink className="size-4" aria-hidden="true" /> View all certificates
             </a>
-          </Reveal>
-        ) : null}
+          ) : (
+            // No folder link yet: show the button, but don't let it go nowhere.
+            <span
+              aria-disabled="true"
+              title="Drive folder link not added yet"
+              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold text-muted-foreground"
+            >
+              <ExternalLink className="size-4" aria-hidden="true" /> View all certificates
+            </span>
+          )}
+        </Reveal>
       </div>
     </section>
   );

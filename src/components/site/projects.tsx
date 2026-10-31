@@ -107,27 +107,32 @@ const PROJECTS: Project[] = [
   {
     title: "Vrundavan",
     tagline:
-      "A restaurant's public site and the app its staff run on, in one codebase: a menu and table booking for guests, and separate admin, waiter and kitchen screens behind a single login \u2014 in English, Marathi and Hindi.",
+      "A full-stack restaurant management app that streamlines order processing and automates inventory tracking, behind a responsive, SEO-optimised Next.js site \u2014 in English, Marathi and Hindi.",
     tech: ["Next.js", "TypeScript", "Prisma", "MongoDB", "NextAuth", "Tailwind", "Radix UI"],
     image: "/projects/Vrundavan.png",
     demo: "https://www.vrundavanhotel.in/",
     github: "https://github.com/tejas-sangale04/Full-Stack",
     detail: {
       problem:
-        "A restaurant needs a site guests will book through and a way for the floor to work the orders. Those are usually two separate systems, and the menu quietly drifts apart between them.",
+        "Orders relayed on paper and stock counted by hand cost a restaurant time on every table, and nothing has run out until somebody notices. The public site has the opposite problem: it has to be found on search and load fast on a phone.",
       hard: [
-        "One app serves three jobs at once, and each role must only ever see its own.",
+        "One app serves guests and three kinds of staff, and each role must only ever see its own.",
         "Sign-in is NextAuth, and middleware checks the role before an admin, waiter or kitchen page renders, so a waiter cannot reach the kitchen board by typing the URL. Admin reaches everything.",
-        "Menu, orders, offers and reservations all go through server actions against one Prisma schema on MongoDB, so the menu a guest reads and the menu the kitchen cooks from are the same record. The whole interface is written three times over, in English, Marathi and Hindi.",
+        "Orders, inventory, menu, offers and reservations all go through server actions against one Prisma schema on MongoDB, so the menu a guest reads and the menu the kitchen cooks from are the same record.",
+        "The guest-facing pages are server-rendered, which is what makes them indexable and quick on first load, while the staff boards stay behind the login. The whole interface is written three times over, in English, Marathi and Hindi.",
       ],
       diagram: (
         <FlowDiagram
-          label="Vrundavan architecture: the guest site handles the menu and table booking, NextAuth with role-aware middleware guards the staff areas, server actions run the writes, Prisma and MongoDB hold the menu, orders, offers and reservations, and the admin, waiter and kitchen screens read the same records."
+          label="Vrundavan architecture: the guest site is server-rendered for search and first load, NextAuth with role-aware middleware guards the staff areas, server actions run the writes, Prisma and MongoDB hold the orders, inventory, menu, offers and reservations, and the admin, waiter and kitchen screens read the same records."
           nodes={[
-            { label: "Guest site", sub: "menu \u00b7 booking", tone: "ui" },
+            { label: "Guest site", sub: "server-rendered", tone: "ui" },
             { label: "NextAuth", sub: "role guard", tone: "api" },
             { label: "Server actions", sub: "Next.js", tone: "api" },
-            { label: "Prisma \u00b7 MongoDB", sub: "one menu, one order", tone: "store" },
+            {
+              label: "Prisma \u00b7 MongoDB",
+              sub: "orders \u00b7 stock \u00b7 menu",
+              tone: "store",
+            },
             { label: "Staff screens", sub: "admin \u00b7 waiter \u00b7 kitchen", tone: "source" },
           ]}
         />
