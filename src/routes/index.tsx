@@ -6,7 +6,6 @@ import { Skills } from "@/components/site/skills";
 import { Projects } from "@/components/site/projects";
 import { Achievements } from "@/components/site/timelines";
 import { Certifications } from "@/components/site/certifications";
-import { Blog } from "@/components/site/blog";
 import { Contact, SiteFooter } from "@/components/site/contact";
 import { Toaster } from "@/components/ui/sonner";
 import { LoadingScreen } from "@/components/site/loading-screen";
@@ -72,7 +71,6 @@ function Index() {
         <Projects />
         <Certifications />
         <Achievements />
-        <Blog />
         <Contact />
       </main>
       <SiteFooter />

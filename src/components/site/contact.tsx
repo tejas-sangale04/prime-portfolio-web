@@ -28,7 +28,7 @@ export function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = encodeURIComponent(String(data.get("subject") ?? ""));
+    const subject = encodeURIComponent(`Portfolio message from ${data.get("name")}`);
     const body = encodeURIComponent(
       `From: ${data.get("name")} (${data.get("email")})\n\n${data.get("message")}`,
     );
@@ -67,15 +67,6 @@ export function Contact() {
                   placeholder="you@example.com"
                 />
               </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="contact-subject">Subject</Label>
-              <Input
-                id="contact-subject"
-                name="subject"
-                required
-                placeholder="What is this about?"
-              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="contact-message">Message</Label>

@@ -71,7 +71,7 @@ export function SiteNav() {
                 className={cn(
                   "rounded-full px-3 py-2 text-sm transition-colors hover:text-foreground",
                   active === link.href
-                    ? "bg-primary/15 text-primary"
+                    ? "bg-emerald-500/15 text-emerald-200"
                     : "text-muted-foreground",
                 )}
               >
@@ -100,7 +100,7 @@ export function SiteNav() {
                 <a
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-3 text-sm text-muted-foreground hover:bg-primary/10 hover:text-foreground"
+                  className="block rounded-lg px-3 py-3 text-sm text-muted-foreground hover:bg-emerald-500/10 hover:text-foreground"
                 >
                   {link.label}
                 </a>
