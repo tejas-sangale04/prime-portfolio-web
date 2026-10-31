@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, ExternalLink, Github } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
@@ -210,161 +210,164 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <motion.li
-      className={cn(
-        "group flex flex-col overflow-hidden rounded-3xl border border-border bg-background/40 transition-colors hover:border-emerald-500/30",
-        // An open card takes the full row so the architecture diagram has room.
-        open ? "lg:col-span-2" : "",
-      )}
-      initial={{ opacity: 0, y: 28 }}
+      // Each card sticks a little lower than the one before it, so they pile up
+      // as you scroll. An open card drops out of the pile: its detail panel can
+      // be taller than the screen, and a stuck element that tall cannot scroll.
+      className={cn("group relative mb-10 lg:top-[var(--stack-top)]", open ? "z-20" : "lg:sticky")}
+      style={{ "--stack-top": `calc(5.5rem + ${index * 1.4}rem)` } as CSSProperties}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.6, delay: (index % 2) * 0.08, ease }}
+      transition={{ duration: 0.6, ease }}
     >
-      {project.image ? (
-        <a
-          href={project.demo ?? project.github ?? project.image}
-          target="_blank"
-          rel="noreferrer"
-          className="block aspect-[16/10] max-h-[460px] overflow-hidden border-b border-border bg-black/40 p-2"
-          tabIndex={-1}
-          aria-hidden="true"
-        >
-          <img
-            src={project.image}
-            alt=""
-            loading="lazy"
-            className="size-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.04]"
-          />
-        </a>
-      ) : null}
-
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
-        <div className="flex items-baseline gap-3">
-          <span
-            className="font-hero text-xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70"
-            style={{ fontStretch: "112%" }}
-            aria-hidden="true"
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <h3
-            className="font-hero text-2xl font-black tracking-[-0.02em] text-foreground sm:text-3xl"
-            style={{ fontStretch: "112%" }}
-          >
-            {project.title}
-          </h3>
-        </div>
-
-        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">{project.tagline}</p>
-
-        {project.metric ? (
-          <p className="mt-5 inline-flex flex-wrap items-baseline gap-2.5 self-start rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
+      <div className="overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-[0_30px_70px_-30px_rgba(0,0,0,0.95)] sm:rounded-[2rem]">
+        <div className="grid items-center gap-8 p-6 sm:p-9 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10">
+          <div>
             <span
-              className="font-hero text-xl font-black text-emerald-300"
+              className="block font-hero text-6xl leading-none font-black text-muted-foreground/25 transition-colors group-hover:text-emerald-400/50 sm:text-7xl"
+              style={{ fontStretch: "125%" }}
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <h3
+              className="mt-5 font-hero text-3xl font-black tracking-[-0.02em] text-foreground uppercase sm:text-4xl"
               style={{ fontStretch: "112%" }}
             >
-              {project.metric.value}
-            </span>
-            <span className="text-xs text-muted-foreground">{project.metric.label}</span>
-          </p>
-        ) : null}
+              {project.title}
+            </h3>
 
-        <ul className="mt-5 mb-7 flex flex-wrap gap-2">
-          {project.tech.map((t) => (
-            <li
-              key={t}
-              className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
+            <p className="mt-4 text-[15px] leading-7 text-muted-foreground">{project.tagline}</p>
 
-        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-border pt-5">
-          {project.demo ? (
+            {project.metric ? (
+              <p className="mt-6 inline-flex flex-wrap items-baseline gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
+                <span
+                  className="font-hero text-xl font-black text-emerald-300"
+                  style={{ fontStretch: "112%" }}
+                >
+                  {project.metric.value}
+                </span>
+                <span className="text-xs text-muted-foreground">{project.metric.label}</span>
+              </p>
+            ) : null}
+
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {project.tech.map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
+                >
+                  {t}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              {project.demo ? (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
+                >
+                  <ExternalLink className="size-4" /> Live site
+                </a>
+              ) : null}
+              {project.detail ? (
+                <button
+                  type="button"
+                  onClick={() => setOpen((v) => !v)}
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500/40 hover:text-emerald-200"
+                >
+                  How it works
+                  <ChevronDown
+                    className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              ) : null}
+              {project.github ? (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Github className="size-4" /> Code
+                </a>
+              ) : null}
+            </div>
+          </div>
+
+          {project.image ? (
             <a
-              href={project.demo}
+              href={project.demo ?? project.github ?? project.image}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
+              tabIndex={-1}
+              aria-hidden="true"
+              className="block aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-black/40 p-2"
             >
-              <ExternalLink className="size-4" /> Live site
-            </a>
-          ) : null}
-          {project.detail ? (
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-controls={panelId}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500/40 hover:text-emerald-200"
-            >
-              How it works
-              <ChevronDown
-                className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
-                aria-hidden="true"
+              <img
+                src={project.image}
+                alt=""
+                loading="lazy"
+                className="size-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.03]"
               />
-            </button>
-          ) : null}
-          {project.github ? (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="ml-auto inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <Github className="size-4" /> Code
             </a>
           ) : null}
         </div>
-      </div>
 
-      <AnimatePresence initial={false}>
-        {open && project.detail ? (
-          <motion.div
-            id={panelId}
-            key="detail"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease }}
-            className="overflow-hidden border-t border-border bg-background/50"
-          >
-            <div className="space-y-10 p-6 sm:p-8">
-              <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    The problem
-                  </h4>
-                  <p className="mt-4 max-w-prose text-[15px] leading-7 text-muted-foreground">
-                    {project.detail.problem}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    The hard part
-                  </h4>
-                  <div className="mt-4 max-w-prose space-y-4 text-[15px] leading-7 text-muted-foreground">
-                    {project.detail.hard.map((para) => (
-                      <p key={para}>{para}</p>
-                    ))}
+        <AnimatePresence initial={false}>
+          {open && project.detail ? (
+            <motion.div
+              id={panelId}
+              key="detail"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.45, ease }}
+              className="overflow-hidden border-t border-border bg-background/60"
+            >
+              <div className="space-y-10 p-6 sm:p-9">
+                <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      The problem
+                    </h4>
+                    <p className="mt-4 max-w-prose text-[15px] leading-7 text-muted-foreground">
+                      {project.detail.problem}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      The hard part
+                    </h4>
+                    <div className="mt-4 max-w-prose space-y-4 text-[15px] leading-7 text-muted-foreground">
+                      {project.detail.hard.map((para) => (
+                        <p key={para}>{para}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                {project.detail.diagram ? (
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                      Architecture
+                    </h4>
+                    <div className="mt-5 overflow-x-auto">
+                      <div className="min-w-[620px]">{project.detail.diagram}</div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
-              {project.detail.diagram ? (
-                <div>
-                  <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
-                    Architecture
-                  </h4>
-                  <div className="mt-5 overflow-x-auto">
-                    <div className="min-w-[620px]">{project.detail.diagram}</div>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
     </motion.li>
   );
 }
@@ -373,7 +376,9 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative isolate scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8"
+      // `overflow-x-clip`, not `overflow-hidden`: hidden on an ancestor would
+      // stop the cards below from sticking.
+      className="relative isolate scroll-mt-24 overflow-x-clip px-5 py-24 sm:px-8"
     >
       <div aria-hidden="true" className="hero-grid absolute inset-0 -z-10" />
       <div className="mx-auto w-full max-w-6xl">
@@ -389,7 +394,7 @@ export function Projects() {
           </p>
         </Reveal>
 
-        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
+        <ul className="mt-14 pb-10">
           {PROJECTS.map((p, i) => (
             <ProjectCard key={p.title} project={p} index={i} />
           ))}

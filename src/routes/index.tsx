@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="relative min-h-dvh overflow-x-hidden bg-background">
+    <div className="relative min-h-dvh overflow-x-clip bg-background">
       <LoadingScreen />
       <a
         href="#about"
