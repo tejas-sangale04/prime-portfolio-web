@@ -32,8 +32,8 @@ export function About() {
 
         <Reveal delay={100}>
           <p className="mx-auto mt-14 max-w-3xl font-hero text-xl leading-[1.6] font-semibold text-foreground/90 sm:text-3xl">
-            Hi, I'm Tejas, a full stack developer and computer engineering student who loves
-            building products people actually use.
+            Hi, I'm Tejas, an AI/ML enthusiast and software engineer. I'm a final-year student at K.
+            K. Wagh, Nashik, and I enjoy working with data and building the apps around it.
           </p>
         </Reveal>
 

@@ -143,36 +143,49 @@ export function Achievements() {
           </p>
         </Reveal>
 
-        <ol className="mx-auto mt-14 max-w-4xl border-b border-border">
+        <ol className="relative mx-auto mt-16 max-w-3xl pl-10 sm:pl-14">
+          {/* The rail, drawn behind the markers. */}
+          <motion.span
+            aria-hidden="true"
+            className="absolute top-2 bottom-2 left-[11px] w-px origin-top bg-linear-to-b from-slate-200/70 via-slate-300/45 to-slate-300/15 sm:left-[19px]"
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1.1, ease }}
+          />
+
           {ACHIEVEMENTS.map((a, i) => (
             <motion.li
               key={a.title}
-              className="group flex items-center gap-5 border-t border-border py-6 sm:gap-7"
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.55, delay: i * 0.07, ease }}
+              className="group relative pb-12 last:pb-0"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.55, delay: 0.15 + i * 0.1, ease }}
             >
+              {/* Marker: small on the rail, swelling and lighting up on hover. */}
               <span
-                className="font-hero text-2xl font-black text-muted-foreground/35 transition-colors group-hover:text-emerald-400/70 sm:text-3xl"
-                style={{ fontStretch: "112%" }}
                 aria-hidden="true"
+                className="absolute top-1.5 -left-10 flex size-6 items-center justify-center sm:-left-14 sm:size-8"
               >
-                {String(i + 1).padStart(2, "0")}
+                <span className="size-2.5 rounded-full bg-slate-300 shadow-[0_0_0_4px] shadow-background transition-all duration-300 group-hover:size-5 group-hover:bg-slate-100 group-hover:shadow-[0_0_0_6px_var(--background),0_0_22px_6px_rgba(226,232,240,0.45)]" />
               </span>
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
-                <a.Icon className="size-5" aria-hidden="true" />
-              </span>
-              <div className="min-w-0">
-                <h3
-                  className="font-hero text-lg font-black tracking-[-0.01em] text-foreground sm:text-xl"
-                  style={{ fontStretch: "112%" }}
-                >
-                  {a.title}
-                </h3>
-                <p className="mt-1 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-                  {a.meta}
-                </p>
+
+              <div className="flex items-start gap-4">
+                <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
+                  <a.Icon className="size-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <h3
+                    className="font-hero text-lg font-black tracking-[-0.01em] text-foreground sm:text-xl"
+                    style={{ fontStretch: "112%" }}
+                  >
+                    {a.title}
+                  </h3>
+                  <p className="mt-1.5 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+                    {a.meta}
+                  </p>
+                </div>
               </div>
             </motion.li>
           ))}
