@@ -56,10 +56,15 @@ export function SiteNav() {
           href="#home"
           className="flex items-center gap-2 text-sm font-bold tracking-tight text-foreground"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary-glow text-primary-foreground">
+          <span className="flex size-9 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/15 text-emerald-300">
             <Code2 className="size-4" />
           </span>
-          <span className="glow-text text-base">Tejas Sangale</span>
+          <span
+            className="font-hero text-base font-black tracking-[-0.01em] text-foreground"
+            style={{ fontStretch: "112%" }}
+          >
+            Tejas <span className="text-emerald-300">Sangale</span>
+          </span>
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
