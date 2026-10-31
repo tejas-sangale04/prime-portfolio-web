@@ -3,8 +3,7 @@ import { Counter } from "@/components/site/counter";
 
 const highlights = [
   { title: "Computer Engineering", copy: "B.E. student" },
-  { title: "Competitive Programmer", copy: "DSA & contests" },
-  { title: "Open Source", copy: "GitHub regular" },
+  { title: "Competitive Programmer", copy: "500+ DSA problems" },
 ];
 
 const stats = [
