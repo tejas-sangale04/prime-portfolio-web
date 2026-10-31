@@ -1,64 +1,31 @@
 import { motion } from "motion/react";
-import { BadgeCheck, Cloud, Code2, Coffee, Cpu, ExternalLink, Globe } from "lucide-react";
+import { BadgeCheck, Code2, Coffee, Cpu, Globe, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/site/reveal";
+
+/**
+ * Drive folder holding the certificate PDFs. Paste the share link here and
+ * the "View all certificates" button appears at the bottom of the section.
+ */
+const ALL_CERTIFICATES_URL = "";
 
 type Cert = {
   title: string;
   issuer: string;
   year: string;
   Icon: LucideIcon;
-  detail: string;
-  /** What it actually covered, as short tags. */
-  covers: string[];
-  /** Public credential URL, if there is one. */
-  link?: string;
 };
 
 const CERTS: Cert[] = [
-  {
-    title: "Programming in Java",
-    issuer: "NPTEL",
-    year: "2024",
-    Icon: Coffee,
-    detail:
-      "Core Java and object-oriented design, taken as a 12-week NPTEL course with a proctored exam.",
-    covers: ["OOP design", "Collections", "Exceptions", "Concurrency"],
-  },
-  {
-    title: "Modern C++",
-    issuer: "NPTEL",
-    year: "2024",
-    Icon: Code2,
-    detail: "The parts of modern C++ that change how you write it: ownership, moves and templates.",
-    covers: ["Smart pointers", "Move semantics", "Templates", "STL"],
-  },
+  { title: "Programming in Java", issuer: "NPTEL", year: "2024", Icon: Coffee },
+  { title: "Modern C++", issuer: "NPTEL", year: "2024", Icon: Code2 },
   {
     title: "Full Stack Web Development",
     issuer: "Online certification",
     year: "2024",
     Icon: Globe,
-    detail:
-      "Building and shipping a full stack application end to end, from the API to deployment.",
-    covers: ["React", "Node.js", "REST APIs", "Deployment"],
   },
-  {
-    title: "AI & Machine Learning",
-    issuer: "Online certification",
-    year: "2025",
-    Icon: Cpu,
-    detail: "Classical machine learning through to the LLM workflows used in the projects above.",
-    covers: ["Supervised learning", "Neural networks", "Evaluation", "Applied LLMs"],
-  },
-  {
-    title: "Cloud Fundamentals",
-    issuer: "Cloud provider",
-    year: "2025",
-    Icon: Cloud,
-    detail:
-      "The groundwork behind deploying these projects on Cloud Run and keeping the bill small.",
-    covers: ["Compute", "Storage", "Networking", "IAM"],
-  },
+  { title: "AI & Machine Learning", issuer: "Online certification", year: "2025", Icon: Cpu },
 ];
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -79,19 +46,19 @@ export function Certifications() {
             Certifications
           </h2>
           <p className="mt-6 font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-            What I studied, and what it covered
+            Courses completed and certified
           </p>
         </Reveal>
 
-        <ul className="mt-14 grid gap-5 md:grid-cols-2">
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {CERTS.map((c, i) => (
             <motion.li
               key={c.title}
-              className="group flex flex-col rounded-3xl border border-border bg-background/50 p-6 transition-colors hover:border-emerald-500/35 sm:p-7"
+              className="group flex flex-col rounded-3xl border border-border bg-background/50 p-6 transition-colors hover:border-emerald-500/35"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.55, delay: (i % 2) * 0.08, ease }}
+              transition={{ duration: 0.55, delay: i * 0.08, ease }}
             >
               <div className="flex items-start justify-between gap-4">
                 <span className="flex size-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
@@ -101,41 +68,30 @@ export function Certifications() {
               </div>
 
               <h3
-                className="mt-5 font-hero text-xl font-black tracking-[-0.01em] text-foreground"
+                className="mt-6 font-hero text-lg font-black tracking-[-0.01em] text-foreground"
                 style={{ fontStretch: "112%" }}
               >
                 {c.title}
               </h3>
-              <p className="mt-1.5 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+              <p className="mt-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
                 {c.issuer} · {c.year}
               </p>
-
-              <p className="mt-4 text-[15px] leading-7 text-muted-foreground">{c.detail}</p>
-
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {c.covers.map((t) => (
-                  <li
-                    key={t}
-                    className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground"
-                  >
-                    {t}
-                  </li>
-                ))}
-              </ul>
-
-              {c.link ? (
-                <a
-                  href={c.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 self-start text-sm font-medium text-muted-foreground transition-colors hover:text-emerald-200"
-                >
-                  <ExternalLink className="size-4" aria-hidden="true" /> View credential
-                </a>
-              ) : null}
             </motion.li>
           ))}
         </ul>
+
+        {ALL_CERTIFICATES_URL ? (
+          <Reveal delay={120} className="mt-12 text-center">
+            <a
+              href={ALL_CERTIFICATES_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
+            >
+              <ExternalLink className="size-4" aria-hidden="true" /> View all certificates
+            </a>
+          </Reveal>
+        ) : null}
       </div>
     </section>
   );
