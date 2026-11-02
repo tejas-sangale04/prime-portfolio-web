@@ -15,9 +15,9 @@ export function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-60 h-0.5 bg-transparent" aria-hidden="true">
+    <div className="fixed inset-x-0 top-0 z-60 h-1.5 bg-transparent" aria-hidden="true">
       <div
-        className="h-full bg-linear-to-r from-primary to-primary-glow transition-[width] duration-150"
+        className="h-full bg-linear-to-r from-primary to-primary-glow light:from-emerald-600 light:to-amber-500 transition-[width] duration-150"
         style={{ width: `${progress}%` }}
       />
     </div>

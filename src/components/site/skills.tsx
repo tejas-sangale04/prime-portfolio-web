@@ -5,14 +5,12 @@ import {
   Bot,
   Brain,
   Bug,
-  Cloud,
   Database,
   FileSearch,
   Layers,
   Plug,
   ScanSearch,
   ShieldCheck,
-  Sparkles,
   Webhook,
 } from "lucide-react";
 import { SkillSphere, type SphereSkill } from "@/components/site/skill-sphere";
@@ -53,7 +51,7 @@ const CATEGORIES: Category[] = [
       { label: "LLMs", icon: Brain },
       { label: "AI Agents", icon: Bot },
       { label: "RAG", icon: FileSearch },
-      { label: "OpenAI SDK", icon: Sparkles },
+      { label: "OpenAI SDK", icon: "openai" },
       { label: "PyTorch", icon: "pytorch" },
       { label: "Keras", icon: "keras" },
       { label: "MCP", icon: Plug },
@@ -77,7 +75,7 @@ const CATEGORIES: Category[] = [
     title: "Cloud & Platforms",
     skills: [
       { label: "Google Cloud", icon: "googlecloud" },
-      { label: "AWS", icon: Cloud },
+      { label: "AWS", icon: "aws" },
       { label: "Vercel", icon: "vercel" },
       { label: "Render", icon: "render" },
     ],
@@ -112,7 +110,7 @@ export function Skills() {
       <div className="mx-auto w-full max-w-6xl">
         <Reveal className="text-center">
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             Skills
@@ -153,7 +151,7 @@ export function Skills() {
                     <motion.span
                       key={skill.label}
                       tabIndex={0}
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 py-1.5 pr-3 pl-2.5 text-sm text-foreground/85 transition-colors outline-none group-hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-200 focus-visible:ring-2 focus-visible:ring-ring"
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 py-1.5 pr-3 pl-2.5 text-sm text-foreground/85 transition-colors outline-none group-hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-200 focus-visible:ring-2 focus-visible:ring-ring light:hover:text-emerald-700"
                       initial={{ opacity: 0, y: 8 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}

@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { BadgeCheck, Code2, Coffee, Cpu, Globe, ExternalLink, CpuIcon, CloudAlert, CloudBackup, CloudCheck } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { BadgeCheck, ExternalLink } from "lucide-react";
+import { SkillIcon, type SkillIconSource } from "@/components/site/skill-icon";
 import { Reveal } from "@/components/site/reveal";
 
 /**
@@ -13,20 +13,43 @@ type Cert = {
   title: string;
   issuer: string;
   year: string;
-  Icon: LucideIcon;
+  Icon: SkillIconSource;
 };
 
 const CERTS: Cert[] = [
-  { title: "Programming in Java", issuer: "NPTEL", year: "2024", Icon: Coffee },
-  { title: "Modern C++", issuer: "NPTEL", year: "2024", Icon: Code2 },
+  { title: "Programming in Java", issuer: "NPTEL", year: "2024", Icon: "java" },
+  { title: "Modern C++", issuer: "NPTEL", year: "2024", Icon: "cpp" },
   {
     title: "AWS Clouds Foundations",
     issuer: "Online certification",
     year: "2025",
-    Icon: CloudCheck,
+    Icon: "aws",
   },
-  { title: "Agentic AI Associate", issuer: "Oracle", year: "2026", Icon: CpuIcon },
+  { title: "Agentic AI Associate", issuer: "Oracle", year: "2026", Icon: "oracle" },
 ];
+
+const ACCENTS = [
+  {
+    bar: "from-emerald-400 via-emerald-500 to-emerald-400",
+    glow: "shadow-[0_0_16px_2px_rgba(16,185,129,0.55)]",
+    icon: "bg-emerald-500/10 text-emerald-300 group-hover:bg-emerald-500/20 light:text-emerald-700",
+  },
+  {
+    bar: "from-violet-400 via-violet-500 to-violet-400",
+    glow: "shadow-[0_0_16px_2px_rgba(167,139,250,0.55)]",
+    icon: "bg-violet-500/10 text-violet-300 group-hover:bg-violet-500/20 light:text-violet-700",
+  },
+  {
+    bar: "from-sky-400 via-sky-500 to-sky-400",
+    glow: "shadow-[0_0_16px_2px_rgba(56,189,248,0.55)]",
+    icon: "bg-sky-500/10 text-sky-300 group-hover:bg-sky-500/20 light:text-sky-700",
+  },
+  {
+    bar: "from-amber-400 via-amber-500 to-amber-400",
+    glow: "shadow-[0_0_16px_2px_rgba(251,191,36,0.55)]",
+    icon: "bg-amber-500/10 text-amber-300 group-hover:bg-amber-500/20 light:text-amber-700",
+  },
+] as const;
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -40,7 +63,7 @@ export function Certifications() {
       <div className="mx-auto w-full max-w-6xl">
         <Reveal className="text-center">
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             Certifications
@@ -51,18 +74,26 @@ export function Certifications() {
         </Reveal>
 
         <ul className="mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-2">
-          {CERTS.map((c, i) => (
+          {CERTS.map((c, i) => {
+            const accent = ACCENTS[i % ACCENTS.length];
+            return (
             <motion.li
               key={c.title}
-              className="group flex flex-col rounded-3xl border border-border bg-background/50 p-6 transition-colors hover:border-emerald-500/35"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-background/50 p-6 transition-colors hover:border-emerald-500/35"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.55, delay: i * 0.08, ease }}
             >
+              <span
+                aria-hidden="true"
+                className={`absolute inset-x-0 top-0 h-1 rounded-t-3xl bg-gradient-to-r ${accent.bar} ${accent.glow}`}
+              />
               <div className="flex items-start justify-between gap-4">
-                <span className="flex size-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
-                  <c.Icon className="size-5" aria-hidden="true" />
+                <span
+                  className={`flex size-11 items-center justify-center rounded-2xl transition-colors ${accent.icon}`}
+                >
+                  <SkillIcon icon={c.Icon} className="size-5" />
                 </span>
                 <BadgeCheck className="size-5 text-emerald-400/60" aria-hidden="true" />
               </div>
@@ -77,7 +108,8 @@ export function Certifications() {
                 {c.issuer} · {c.year}
               </p>
             </motion.li>
-          ))}
+            );
+          })}
         </ul>
 
         <Reveal delay={120} className="mt-12 text-center">
@@ -86,7 +118,7 @@ export function Certifications() {
               href={ALL_CERTIFICATES_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20 light:text-emerald-800"
             >
               <ExternalLink className="size-4" aria-hidden="true" /> View all certificates
             </a>

@@ -13,11 +13,16 @@ function isDark(hex: string) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b < 60;
 }
 
+// Brands whose real logo is a bitmap (two-tone marks that a single-colour path can't show).
+const IMAGE_ICONS: Partial<Record<BrandKey, string>> = { java: "/java-logo.png" };
+
 export function SkillIcon({ icon, className }: { icon: SkillIconSource; className?: string }) {
   if (typeof icon !== "string") {
     const Icon = icon;
-    return <Icon aria-hidden="true" className={cn("text-emerald-300/90", className)} />;
+    return <Icon aria-hidden="true" className={cn("text-emerald-300/90 light:text-emerald-700/90", className)} />;
   }
+  const image = IMAGE_ICONS[icon];
+  if (image) return <img src={image} alt="" aria-hidden="true" className={cn("object-contain", className)} />;
   const brand = BRAND_ICONS[icon];
   return (
     <svg

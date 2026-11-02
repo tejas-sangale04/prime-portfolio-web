@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Code2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/site/theme-toggle";
 
 export const NAV_LINKS = [
   { label: "Home", href: "#home" },
@@ -50,20 +51,18 @@ export function SiteNav() {
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-3 sm:px-8"
+        className="flex w-full items-center justify-between px-5 py-3 sm:px-8 lg:px-12 xl:px-16"
       >
         <a
           href="#home"
           className="flex items-center gap-2 text-sm font-bold tracking-tight text-foreground"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/15 text-emerald-300">
-            <Code2 className="size-4" />
-          </span>
+      
           <span
             className="font-hero text-base font-black tracking-[-0.01em] text-foreground"
             style={{ fontStretch: "112%" }}
           >
-            Tejas <span className="text-emerald-300">Sangale</span>
+            Tejas <span className="text-emerald-300 light:text-emerald-600">Sangale</span>
           </span>
         </a>
 
@@ -76,7 +75,7 @@ export function SiteNav() {
                 className={cn(
                   "rounded-full px-3 py-2 text-sm transition-colors hover:text-foreground",
                   active === link.href
-                    ? "bg-emerald-500/15 text-emerald-200"
+                    ? "bg-emerald-500/15 text-emerald-200 light:bg-emerald-500/20 light:text-emerald-700"
                     : "text-muted-foreground",
                 )}
               >
@@ -86,20 +85,24 @@ export function SiteNav() {
           ))}
         </ul>
 
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="glass flex size-11 items-center justify-center rounded-xl text-foreground lg:hidden"
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="glass flex size-11 items-center justify-center rounded-xl text-foreground lg:hidden"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </nav>
 
       {open ? (
         <div className="glass border-t border-border lg:hidden">
-          <ul className="mx-auto grid max-w-6xl gap-1 px-5 py-4 sm:px-8">
+          <ul className="grid gap-1 px-5 py-4 sm:px-8 lg:px-12 xl:px-16">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <a

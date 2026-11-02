@@ -77,15 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aarav Deshmukh — Developer Portfolio" },
+      { title: "Tejas Sangale — Developer Portfolio" },
       {
         name: "description",
         content:
           "Full stack developer building AI-powered web and mobile products with React, Node.js and Python.",
       },
-      { name: "author", content: "Aarav Deshmukh" },
+      { name: "author", content: "Tejas Sangale" },
       { name: "theme-color", content: "#3B82F6" },
-      { property: "og:site_name", content: "Aarav Deshmukh" },
+      { property: "og:site_name", content: "Tejas Sangale" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -114,6 +114,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light')}}catch(e){}",
+          }}
+        />
       </head>
       <body>
         {children}

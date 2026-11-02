@@ -243,7 +243,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {project.metric ? (
               <p className="mt-6 inline-flex flex-wrap items-baseline gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2">
                 <span
-                  className="font-hero text-xl font-black text-emerald-300"
+                  className="font-hero text-xl font-black text-emerald-300 light:text-emerald-700"
                   style={{ fontStretch: "112%" }}
                 >
                   {project.metric.value}
@@ -269,7 +269,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   href={project.demo}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/20 light:text-emerald-800"
                 >
                   <ExternalLink className="size-4" /> Live site
                 </a>
@@ -280,7 +280,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   onClick={() => setOpen((v) => !v)}
                   aria-expanded={open}
                   aria-controls={panelId}
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500/40 hover:text-emerald-200"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500/40 hover:text-emerald-200 light:hover:text-emerald-700"
                 >
                   How it works
                   <ChevronDown
@@ -309,13 +309,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               rel="noreferrer"
               tabIndex={-1}
               aria-hidden="true"
-              className="block aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-black/40 p-2"
+              className="block overflow-hidden rounded-2xl border border-border shadow-lg"
             >
               <img
                 src={project.image}
                 alt=""
                 loading="lazy"
-                className="size-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                className="block h-auto w-full transition-transform duration-500 group-hover:scale-[1.03]"
               />
             </a>
           ) : null}
@@ -335,7 +335,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               <div className="space-y-10 p-6 sm:p-9">
                 <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
                   <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase light:text-emerald-700">
                       The problem
                     </h4>
                     <p className="mt-4 max-w-prose text-[15px] leading-7 text-muted-foreground">
@@ -343,7 +343,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase light:text-emerald-700">
                       The hard part
                     </h4>
                     <div className="mt-4 max-w-prose space-y-4 text-[15px] leading-7 text-muted-foreground">
@@ -355,7 +355,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 </div>
                 {project.detail.diagram ? (
                   <div>
-                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase">
+                    <h4 className="font-mono text-xs tracking-[0.2em] text-emerald-400 uppercase light:text-emerald-700">
                       Architecture
                     </h4>
                     <div className="mt-5 overflow-x-auto">
@@ -384,7 +384,7 @@ export function Projects() {
       <div className="mx-auto w-full max-w-6xl">
         <Reveal className="text-center">
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             Projects

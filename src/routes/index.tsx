@@ -17,9 +17,9 @@ import {
 } from "@/components/site/site-chrome";
 import { SparkCursor } from "@/components/site/sparkles";
 
-const title = "Aarav Deshmukh — Full Stack Developer & AI Enthusiast";
+const title = "Tejas Sangale — Full Stack Developer & AI Enthusiast";
 const description =
-  "Portfolio of Aarav Deshmukh: full stack web and mobile developer building AI-powered products with React, Node.js and Python.";
+  "Portfolio of Tejas Sangale: full stack web and mobile developer building AI-powered products with React, Node.js and Python.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: "Aarav Deshmukh",
+          name: "Tejas Sangale",
           jobTitle: "Full Stack Developer",
           url: "/",
         }),

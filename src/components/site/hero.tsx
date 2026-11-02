@@ -89,7 +89,7 @@ export function Hero() {
 
       <div className="relative flex flex-1 flex-col justify-center">
         <motion.h1
-          className="mt-10 bg-linear-to-b from-zinc-500 via-slate-400 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3rem,13vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-transparent"
+          className="mt-10 bg-linear-to-b from-zinc-500 via-slate-400 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3rem,13vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-transparent light:from-zinc-700 light:via-slate-800 light:to-slate-900"
           style={{ fontStretch: "125%" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

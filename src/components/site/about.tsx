@@ -7,10 +7,10 @@ const highlights = [
 ];
 
 const stats = [
-  { value: 15, suffix: "+", label: "Projects" },
-  { value: 25, suffix: "+", label: "Technologies" },
+  { value: 6, suffix: "+", label: "Projects" },
+  { value: 15, suffix: "+", label: "Technologies" },
   { value: 8, suffix: "+", label: "Certifications" },
-  { value: 700, suffix: "+", label: "Contributions" },
+  { value: 200, suffix: "+", label: "Contributions" },
 ];
 
 export function About() {
@@ -23,7 +23,7 @@ export function About() {
       <div className="mx-auto w-full max-w-6xl text-center">
         <Reveal>
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(3.5rem,13vw,11rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             About Me
@@ -78,6 +78,7 @@ export function About() {
             </div>
           ))}
         </Reveal>
+
       </div>
     </section>
   );

@@ -3,6 +3,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 /*
  * Design system definition.
@@ -99,6 +100,48 @@
   --sidebar-ring: oklch(0.623 0.188 259.8);
 }
 
+.light {
+  --strap-from: oklch(0.6 0.15 163);
+  --strap-to: oklch(0.75 0.16 75);
+  --background: oklch(0.97 0.025 85);
+  --foreground: oklch(0.2 0.02 264);
+  --card: oklch(0.99 0.018 85);
+  --card-foreground: oklch(0.2 0.02 264);
+  --popover: oklch(0.99 0.018 85);
+  --popover-foreground: oklch(0.2 0.02 264);
+  --primary: oklch(0.55 0.18 259.8);
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-glow: oklch(0.62 0.15 232);
+  --secondary: oklch(0.93 0.025 85);
+  --secondary-foreground: oklch(0.2 0.02 264);
+  --muted: oklch(0.93 0.025 85);
+  --muted-foreground: oklch(0.45 0.02 264);
+  --accent: oklch(0.9 0.035 85);
+  --accent-foreground: oklch(0.2 0.02 264);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 14%);
+  --ring: oklch(0.55 0.18 259.8);
+  --chart-1: oklch(0.55 0.18 259.8);
+  --chart-2: oklch(0.62 0.15 232);
+  --chart-3: oklch(0.56 0.15 162.48);
+  --chart-4: oklch(0.52 0.22 303.9);
+  --chart-5: oklch(0.62 0.17 70.08);
+  --sidebar: oklch(0.99 0.018 85);
+  --sidebar-foreground: oklch(0.2 0.02 264);
+  --sidebar-primary: oklch(0.55 0.18 259.8);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.93 0.025 85);
+  --sidebar-accent-foreground: oklch(0.2 0.02 264);
+  --sidebar-border: oklch(0 0 0 / 10%);
+  --sidebar-ring: oklch(0.55 0.18 259.8);
+}
+
+html.light {
+  color-scheme: light;
+}
+
 @theme inline {
   --color-primary-glow: var(--primary-glow);
 }
@@ -139,6 +182,14 @@ html {
   background: color-mix(in oklab, var(--card) 55%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
   border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+@utility heading-shadow {
+  filter: drop-shadow(0 4px 0 color-mix(in oklab, var(--foreground) 14%, transparent))
+    drop-shadow(0 14px 28px color-mix(in oklab, var(--primary) 35%, transparent));
+  :is(.light) & {
+    filter: drop-shadow(4px 5px 0 rgb(0 0 0 / 0.22)) drop-shadow(0 16px 22px rgb(0 0 0 / 0.4));
+  }
 }
 
 @utility glow-text {

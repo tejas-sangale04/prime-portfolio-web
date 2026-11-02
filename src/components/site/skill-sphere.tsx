@@ -152,10 +152,10 @@ export function SkillSphere({
             className={cn(
               "absolute top-1/2 left-1/2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-hero text-xs font-bold whitespace-nowrap sm:text-sm transition-[color,background-color,box-shadow] duration-300 will-change-transform",
               on
-                ? "bg-emerald-500/15 text-emerald-300 shadow-[0_0_18px] shadow-emerald-500/40"
+                ? "bg-emerald-500/15 text-emerald-300 shadow-[0_0_18px] shadow-emerald-500/40 light:text-emerald-700"
                 : active
                   ? "text-muted-foreground/50"
-                  : "text-slate-300",
+                  : "text-slate-300 light:text-slate-600",
             )}
             style={{ fontStretch: "112%" }}
           >

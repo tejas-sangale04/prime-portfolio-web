@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
-import { Github, Linkedin, Mail, Send, Code2, Trophy, Terminal } from "lucide-react";
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Reveal } from "@/components/site/reveal";
+import { VisitorCount } from "@/components/site/visitor-count";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,12 +13,13 @@ import { Textarea } from "@/components/ui/textarea";
  */
 const CONTACT_EMAIL = "tejassangale90@gmail.com";
 
-export const SOCIALS = [
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
+/**
+ * Social links shown in the contact section and footer. Swap these hrefs for
+ * your own.
+ */
+const SOCIALS = [
   { label: "GitHub", href: "https://github.com/tejas-sangale04", Icon: Github },
-  { label: "LeetCode", href: "https://leetcode.com", Icon: Code2 },
-  { label: "Codeforces", href: "https://codeforces.com", Icon: Trophy },
-  { label: "HackerRank", href: "https://hackerrank.com", Icon: Terminal },
+  { label: "LinkedIn", href: "https://linkedin.com/in/tejas-sangale", Icon: Linkedin },
 ];
 
 const field =
@@ -52,7 +54,7 @@ export function Contact() {
       <div className="mx-auto w-full max-w-6xl">
         <Reveal className="text-center">
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.75rem,9vw,8rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.75rem,9vw,8rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             Contact
@@ -119,7 +121,7 @@ export function Contact() {
             <button
               type="submit"
               disabled={sending}
-              className="mt-1 inline-flex items-center justify-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-6 py-3 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/25 disabled:opacity-60"
+              className="mt-1 inline-flex items-center justify-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-6 py-3 text-sm font-semibold text-emerald-200 transition-colors hover:bg-emerald-500/25 disabled:opacity-60 light:text-emerald-800"
             >
               <Send className="size-4" aria-hidden="true" /> Send message
             </button>
@@ -129,7 +131,7 @@ export function Contact() {
         <Reveal delay={160} className="mt-10 flex flex-col items-center gap-5">
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase transition-colors hover:text-emerald-200"
+            className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase transition-colors hover:text-emerald-200 light:hover:text-emerald-700"
           >
             <Mail className="size-4" aria-hidden="true" /> {CONTACT_EMAIL}
           </a>
@@ -142,7 +144,7 @@ export function Contact() {
                   rel="noreferrer"
                   aria-label={s.label}
                   title={s.label}
-                  className="flex size-11 items-center justify-center rounded-xl border border-border bg-background/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-emerald-500/40 hover:text-emerald-200"
+                  className="flex size-11 items-center justify-center rounded-xl border border-border bg-background/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-emerald-500/40 hover:text-emerald-200 light:hover:text-emerald-700"
                 >
                   <s.Icon className="size-5" aria-hidden="true" />
                 </a>
@@ -157,26 +159,12 @@ export function Contact() {
 
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 border-t border-border px-5 py-10 sm:px-8">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+    <footer className="relative z-10 border-t border-border px-5 py-10 sm:px-8 lg:px-12 xl:px-16">
+      <div className="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Tejas Sangale. Built with React & Tailwind CSS.
+          © {new Date().getFullYear()} Tejas Sangale
         </p>
-        <ul className="flex items-center gap-3">
-          {SOCIALS.map((s) => (
-            <li key={s.label}>
-              <a
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={s.label}
-                className="flex size-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-primary"
-              >
-                <s.Icon className="size-5" aria-hidden="true" />
-              </a>
-            </li>
-          ))}
-        </ul>
+        <VisitorCount />
       </div>
     </footer>
   );

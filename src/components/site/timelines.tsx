@@ -133,7 +133,7 @@ export function Achievements() {
       <div className="mx-auto w-full max-w-6xl">
         <Reveal className="text-center">
           <h2
-            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent"
+            className="bg-linear-to-b from-zinc-500 to-slate-300 bg-clip-text pb-[0.08em] font-hero text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em] text-transparent heading-shadow light:from-zinc-700 light:to-slate-900"
             style={{ fontStretch: "125%" }}
           >
             Achievements
@@ -172,7 +172,7 @@ export function Achievements() {
               </span>
 
               <div className="flex items-start gap-4">
-                <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20">
+                <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300 transition-colors group-hover:bg-emerald-500/20 light:text-emerald-700">
                   <a.Icon className="size-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">

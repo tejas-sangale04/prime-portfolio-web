@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /*
@@ -21,11 +22,11 @@ type Vec = { x: number; y: number };
 type Pt = Vec & { px: number; py: number };
 
 function useCardSize() {
-  const [size, setSize] = useState({ w: 250, h: 360, rope: 170 });
+  const [size, setSize] = useState({ w: 250, h: 440, rope: 170 });
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 640px)");
     const apply = () =>
-      setSize(mq.matches ? { w: 250, h: 360, rope: 170 } : { w: 210, h: 300, rope: 120 });
+      setSize(mq.matches ? { w: 250, h: 440, rope: 170 } : { w: 210, h: 370, rope: 120 });
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
@@ -241,8 +242,8 @@ export function IdCard() {
       >
         <defs>
           <linearGradient id="strap-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--primary)" />
-            <stop offset="100%" stopColor="var(--primary-glow)" />
+            <stop offset="0%" stopColor="var(--strap-from, var(--primary))" />
+            <stop offset="100%" stopColor="var(--strap-to, var(--primary-glow))" />
           </linearGradient>
         </defs>
         <path
@@ -320,59 +321,59 @@ export function IdCard() {
 }
 
 const face =
-  "absolute inset-0 overflow-hidden rounded-3xl border border-white/10 [backface-visibility:hidden] shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7),0_0_40px_-10px_color-mix(in_oklab,var(--primary)_45%,transparent)]";
+  "absolute inset-0 overflow-hidden rounded-3xl border-4 border-zinc-400/40 [backface-visibility:hidden] shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7),0_0_40px_-10px_color-mix(in_oklab,var(--primary)_45%,transparent)]";
 
 function CardFront() {
   return (
     <div className={cn(face, "flex flex-col bg-card")}>
-      {/* header band */}
-      <div className="relative h-[34%] bg-gradient-to-br from-primary via-primary/80 to-primary-glow">
-        <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:14px_14px]" />
-        <div className="relative flex items-start justify-between p-4 text-primary-foreground">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
-              Developer pass
-            </p>
-            <p className="mt-0.5 text-sm font-bold">TS · 2026</p>
-          </div>
-          {/* chip */}
-          <div className="grid h-7 w-9 grid-cols-3 gap-px overflow-hidden rounded-md bg-amber-200/90 p-0.5">
-            {Array.from({ length: 6 }, (_, i) => (
-              <span key={i} className="rounded-[2px] bg-amber-400/80" />
-            ))}
-          </div>
-        </div>
+      {/* profile photo — public/portfolio_img.png */}
+      <div className="relative flex h-[56%] items-center justify-center bg-muted">
+        <span className="absolute top-3 right-3 z-10 rounded-full bg-amber-500/90 px-2 py-0.5 text-[9px] font-semibold tracking-wide text-white uppercase backdrop-blur-sm">
+          Nashik
+        </span>
+        <User className="absolute size-14 text-muted-foreground/40" aria-hidden="true" />
+        <img
+          src="/portfolio_img.png"
+          alt="Tejas Sangale"
+          className="relative size-full object-cover object-top"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
       </div>
 
-      {/* avatar overlapping band */}
-      <div className="relative z-10 -mt-11 flex justify-center">
-        <div className="flex size-22 items-center justify-center rounded-full border-4 border-card bg-gradient-to-br from-secondary to-accent text-2xl font-bold text-foreground shadow-lg">
-          TS
-        </div>
-      </div>
+      <div className="flex flex-1 flex-col px-5 pt-4 pb-4 text-left">
+        <p className="text-xl leading-tight font-bold text-foreground">
+          Tejas <span className="text-primary">Sangale</span>
+        </p>
+       {/* <p className="mt-1 text-sm font-semibold text-foreground">Full Stack Developer</p>*/}
+        <p className="mt-1 text-[10px] tracking-widest text-muted-foreground uppercase">
+          B.E. Computer Engineering
+        </p>
 
-      <div className="flex flex-1 flex-col items-center px-5 pt-3 text-center">
-        <p className="text-lg font-bold leading-tight text-foreground">Tejas Sangale</p>
-        <p className="mt-1 text-xs font-medium text-primary">Full Stack Developer</p>
-        <div className="mt-3 flex flex-wrap justify-center gap-1.5">
-          {["React", "Node", "Python"].map((s) => (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {[
+            { label: "OOPs", classes: "bg-violet-500/15 text-violet-300 light:text-violet-700" },
+            { label: "Python", classes: "bg-sky-500/15 text-sky-300 light:text-sky-700" },
+            { label: "React", classes: "bg-emerald-500/15 text-emerald-300 light:text-emerald-700" },
+          ].map((s) => (
             <span
-              key={s}
-              className="rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] text-muted-foreground"
+              key={s.label}
+              className={cn(
+                "rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                s.classes,
+              )}
             >
-              {s}
+              {s.label}
             </span>
           ))}
         </div>
 
-        <div className="mt-auto w-full pb-4">
-          <div className="flex items-center justify-between text-[9px] uppercase tracking-widest text-muted-foreground">
-            <span>ID 0426-FSD</span>
-            <span className="flex items-center gap-1">
-              <span className="size-1.5 rounded-full bg-chart-3" /> Open to work
-            </span>
-          </div>
-          <Barcode className="mt-2 h-7" />
+        <div className="mt-auto flex items-center justify-between text-[9px] tracking-widest text-muted-foreground uppercase">
+          <span>ID 0426-FSD</span>
+          <span className="flex items-center gap-1">
+            <span className="size-1.5 rounded-full bg-chart-3" /> Open to work
+          </span>
         </div>
       </div>
     </div>
@@ -382,12 +383,18 @@ function CardFront() {
 function CardBack() {
   return (
     <div className={cn(face, "flex flex-col bg-card p-5 [transform:rotateY(180deg)]")}>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+      <p className="font-hero text-2xl leading-[1.05] font-black text-foreground">
+        Nice to
+        <br />
+        <span className="font-serif text-2xl font-semibold text-primary italic">meet you.</span>
+      </p>
+
+      <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         At a glance
       </p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         {[
-          { k: "15+", v: "Projects" },
+          { k: "6+", v: "Projects" },
           { k: "500+", v: "DSA" },
           { k: "8+", v: "Certs" },
         ].map((s) => (
@@ -403,26 +410,19 @@ function CardBack() {
         accessible UI.
       </p>
 
-      <div className="mt-auto flex items-end justify-between gap-3">
+      <div className="my-auto flex items-center justify-between gap-3">
         <div className="text-[10px] leading-relaxed text-muted-foreground">
           <p className="font-semibold text-foreground">Let's connect</p>
-          <p>hello@example.com</p>
-          <p>github.com</p>
+          <p>tejassangale90@gmail.com</p>
+          <p>github.com/tejas-sangale04</p>
         </div>
-        <QrPattern className="size-20 shrink-0" />
+        <div className="flex shrink-0 flex-col items-center gap-1">
+          <QrPattern className="size-16" />
+          <p className="text-[8px] font-bold uppercase tracking-wide text-muted-foreground">
+            Scan for résumé
+          </p>
+        </div>
       </div>
-    </div>
-  );
-}
-
-// Decorative only; deterministic so server and client render the same markup.
-function Barcode({ className }: { className?: string }) {
-  const bars = Array.from({ length: 42 }, (_, i) => ((i * 7919) % 13) % 3);
-  return (
-    <div aria-hidden="true" className={cn("flex items-stretch gap-[2px]", className)}>
-      {bars.map((b, i) => (
-        <span key={i} className="bg-foreground/80" style={{ width: b + 1 }} />
-      ))}
     </div>
   );
 }
