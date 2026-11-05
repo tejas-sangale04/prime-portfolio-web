@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { QRCodeSVG } from "qrcode.react";
 
 /*
  * Hanging lanyard ID card.
@@ -382,7 +383,7 @@ function CardFront() {
 
 function CardBack() {
   return (
-    <div className={cn(face, "flex flex-col bg-card p-5 [transform:rotateY(180deg)]")}>
+    <div className={cn(face, "flex flex-col bg-card p-4 sm:p-5 [transform:rotateY(180deg)]")}>
       <p className="font-hero text-2xl leading-[1.05] font-black text-foreground">
         Nice to
         <br />
@@ -409,20 +410,28 @@ function CardBack() {
         Builds AI-powered web & mobile products. Focused on clean architecture, performance and
         accessible UI.
       </p>
+        <div className="my-auto flex w-full items-center justify-between gap-1">
+  <div className="min-w-0 flex-1 text-[8px] leading-relaxed text-muted-foreground sm:text-[9px]">
+    <p className="font-semibold text-foreground">Let's connect</p>
+    <p className="break-all">tejassangale90@gmail.com</p>
+    <p className="break-all">github.com/tejas-sangale04</p>
+  </div>
 
-      <div className="my-auto flex items-center justify-between gap-3">
-        <div className="text-[10px] leading-relaxed text-muted-foreground">
-          <p className="font-semibold text-foreground">Let's connect</p>
-          <p>tejassangale90@gmail.com</p>
-          <p>github.com/tejas-sangale04</p>
-        </div>
-        <div className="flex shrink-0 flex-col items-center gap-1">
-          <QrPattern className="size-16" />
-          <p className="text-[8px] font-bold uppercase tracking-wide text-muted-foreground">
-            Scan for résumé
-          </p>
-        </div>
-      </div>
+  <div className="flex w-[54px] shrink-0 flex-col items-center gap-1 sm:w-16">
+    <QRCodeSVG
+      value="https://prime-portfolio-web.vercel.app/Updated.pdf"
+      size={48}
+      level="H"
+      bgColor="#ffffff"
+      fgColor="#000000"
+      marginSize={2}
+    />
+
+    <p className="w-full text-center text-[6px] font-bold uppercase leading-tight tracking-normal text-muted-foreground sm:text-[8px]">
+      Scan for résumé
+    </p>
+  </div>
+</div>
     </div>
   );
 }

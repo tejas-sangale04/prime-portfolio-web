@@ -32,7 +32,7 @@ const PROJECTS: Project[] = [
     tech: ["Python", "FastAPI", "Google ADK", "Gemini 2.5", "React", "Firestore", "Cloud Run"],
     github: "https://github.com/tejas-sangale04/Invoice-to-payment-agent",
     image: "/projects/invoiceflow.png",
-    metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
+  //  metric: { value: "180/180", label: "decisions correct across 60 eval cases" },
     detail: {
       problem:
         "Accounts-payable teams check every invoice by hand against what was ordered and what arrived. It is slow, and overcharges and duplicate invoices slip through.",

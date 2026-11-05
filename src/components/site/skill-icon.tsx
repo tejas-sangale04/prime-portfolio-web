@@ -14,7 +14,7 @@ function isDark(hex: string) {
 }
 
 // Brands whose real logo is a bitmap (two-tone marks that a single-colour path can't show).
-const IMAGE_ICONS: Partial<Record<BrandKey, string>> = { java: "/java-logo.png" };
+const IMAGE_ICONS: Partial<Record<BrandKey, string>> = { java: "/java-logo.png", googleadk: "/ADK.png", mcp: "/MCP.png" };
 
 export function SkillIcon({ icon, className }: { icon: SkillIconSource; className?: string }) {
   if (typeof icon !== "string") {

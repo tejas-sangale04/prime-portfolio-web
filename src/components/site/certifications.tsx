@@ -7,7 +7,7 @@ import { Reveal } from "@/components/site/reveal";
  * Drive folder holding the certificate PDFs. Paste the share link here and
  * the "View all certificates" button appears at the bottom of the section.
  */
-const ALL_CERTIFICATES_URL = "https://drive.google.com/drive/folders/1XHhX6jApPmAHy1OYMf-Q8ddE8kbZqF_b?usp=drive_link";
+const ALL_CERTIFICATES_URL = "https://drive.google.com/drive/folders/1XHhX6jApPmAHy1OYMf-Q8ddE8kbZqF_b?usp=sharing";
 
 type Cert = {
   title: string;

@@ -32,17 +32,11 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
+    links: [
+      { rel: "canonical", href: "/" },
       {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: "Tejas Sangale",
-          jobTitle: "Full Stack Developer",
-          url: "/",
-        }),
+        rel: "apple-touch-icon",
+        href: "/ts_Logo.png",
       },
     ],
   }),

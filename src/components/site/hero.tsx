@@ -15,8 +15,8 @@ function LeetCodeIcon({ className }: { className?: string }) {
 
 const LINKS = [
   { label: "GitHub", href: "https://github.com/tejas-sangale04", Icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: Linkedin },
-  { label: "LeetCode", href: "https://leetcode.com", Icon: LeetCodeIcon },
+  { label: "LinkedIn", href: "https://linkedin.com/in/tejas-sangale07", Icon: Linkedin },
+  { label: "LeetCode", href: "https://leetcode.com/u/tejas_sangale/", Icon: LeetCodeIcon },
 ];
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -100,13 +100,18 @@ export function Hero() {
         </motion.h1>
 
         <motion.div
-          className="relative mx-auto mt-10 w-full max-w-sm lg:absolute lg:top-0 lg:right-0 lg:z-10 lg:mt-0 lg:w-[300px]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.15 }}
-        >
-          <IdCard />
-        </motion.div>
+  className="
+    relative mx-auto mt-10 w-full max-w-sm
+    lg:absolute lg:-top-32 lg:right-0 lg:z-10
+    lg:mt-0 lg:w-[300px]
+    [@media(max-height:800px)]:lg:-top-24
+  "
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.4, delay: 0.15 }}
+>
+  <IdCard />
+</motion.div>
       </div>
 
       <motion.div

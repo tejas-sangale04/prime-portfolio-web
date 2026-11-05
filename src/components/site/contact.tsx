@@ -19,7 +19,7 @@ const CONTACT_EMAIL = "tejassangale90@gmail.com";
  */
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/tejas-sangale04", Icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com/in/tejas-sangale", Icon: Linkedin },
+  { label: "LinkedIn", href: "https://linkedin.com/in/tejas-sangale07", Icon: Linkedin },
 ];
 
 const field =
